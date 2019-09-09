@@ -1,6 +1,6 @@
 <html doctype="html">
 <head>
-    <title>RPG Name Generators</title>
+    <title>Generate NPC Names</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -24,7 +24,8 @@
         .generate-button {
             padding: 15px;
             font-size: 1.2em;
-            margin: 20px 0;
+            margin: 20px auto;
+            display: block;
         }
 
         /* NAME DISPLAYS */
@@ -45,53 +46,55 @@
 
     <div class="container">
 
-        <h1>RPG Name Generator</h1>
+        <h1>RPG Name Generators</h1>
 
         <hr/>
 
         <h2>Generate NPC Names</h2>
         
-        <div class="setting">
-            <label for="region">For this Region</label>
-            <select id="region">
-                <option>Archaic</option>
-                <option>Westron</option>
-                <option>Southron</option>
-                <option>Northish</option>
-            </select>
-        </div>
+        <div class="settings">
+            <div class="setting">
+                <label for="region">For this Region</label>
+                <select id="region">
+                    <option>Archaic</option>
+                    <option selected>Westron</option>
+                    <option>Northish</option>
+                    <option>Southron</option>
+                </select>
+            </div>
 
-        <div class="setting">
-            <label for="occupations">With these Occupations</label>
-            <select id="occupations" multiple size="18">
-                <option value="Desertfolk">Desertfolk</option>
-                <option value="Farmfolk">Farmfolk</option>
-                <option value="Foodmakers">Foodmakers</option>
-                <option value="Frozen lands">Frozen lands</option>
-                <option value="Garmentmakers">Garmentmakers</option>
-                <option value="Islanders">Islanders</option>
-                <option value="Masons/builders/miscellaneous crafters">Masons/builders/miscellaneous crafters</option>
-                <option value="Miners/mountainfolk">Miners/mountainfolk</option>
-                <option value="Moneylenders/gemcutters/merchants">Moneylenders/gemcutters/merchants</option>
-                <option value="Priests/scholars/mages">Priests/scholars/mages</option>
-                <option value="Riverfolk">Riverfolk</option>
-                <option value="Seafolk">Seafolk</option>
-                <option value="Smiths">Smiths</option>
-                <option value="Soldiers/guards/warriors">Soldiers/guards/warriors</option>
-                <option value="Stable hands/drivers">Stable hands/drivers</option>
-                <option value="Swampfolk">Swampfolk</option>
-                <option value="Townfolk/cityfolk">Townfolk/cityfolk</option>
-                <option value="Woodsfolk">Woodsfolk</option>
-            </select>
-        </div>
+            <div class="setting">
+                <label for="occupations">With these Occupations</label>
+                <select id="occupations" multiple size="18">
+                    <option value="Desertfolk">Desertfolk</option>
+                    <option value="Farmfolk">Farmfolk</option>
+                    <option value="Foodmakers">Foodmakers</option>
+                    <option value="Frozen lands">Frozen lands</option>
+                    <option value="Garmentmakers">Garmentmakers</option>
+                    <option value="Islanders">Islanders</option>
+                    <option value="Masons/builders/miscellaneous crafters">Masons/builders/miscellaneous crafters</option>
+                    <option value="Miners/mountainfolk">Miners/mountainfolk</option>
+                    <option value="Moneylenders/gemcutters/merchants">Moneylenders/gemcutters/merchants</option>
+                    <option value="Priests/scholars/mages">Priests/scholars/mages</option>
+                    <option value="Riverfolk">Riverfolk</option>
+                    <option value="Seafolk">Seafolk</option>
+                    <option value="Smiths">Smiths</option>
+                    <option value="Soldiers/guards/warriors">Soldiers/guards/warriors</option>
+                    <option value="Stable hands/drivers">Stable hands/drivers</option>
+                    <option value="Swampfolk">Swampfolk</option>
+                    <option value="Townfolk/cityfolk">Townfolk/cityfolk</option>
+                    <option value="Woodsfolk">Woodsfolk</option>
+                </select>
+            </div>
 
-        <div class="setting">
-            <label for="number">How many?</label>
-            <select id="number">
-                <option value="1">Just one</option>
-                <option value="8">Village (5-10)</option>
-                <option value="15">City (10-20)</option>
-            </select>
+            <div class="setting">
+                <label for="number">How many?</label>
+                <select id="number">
+                    <option value="1">Just one</option>
+                    <option value="8" selected>Village (5-10)</option>
+                    <option value="15">City (10-20)</option>
+                </select>
+            </div>
         </div>
 
         <input class="generate-button" type="button" onclick="generateNames()" value="GENERATE" />
