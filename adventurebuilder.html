@@ -1,0 +1,132 @@
+<html doctype="html">
+<head>
+    <title>Build an Adventure</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <style>
+        html {
+            background-color: #333;
+            color: white;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 10px 10px 50px;
+        }
+
+        .nav-item {
+            padding: 10px;
+            display: inline-block;
+            border: 1px solid white;
+            color: white;
+        }
+
+        .nav-item.selected {
+            background-color: #666;
+        }
+
+        .adventure {
+            font-size: 1.5em;
+            color: white;
+        }
+
+        .descriptor {
+            color: lightblue;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>RPG Generators</h1>
+
+        <nav>
+            <a class="nav-item" href="index.html">NPC Names</a>
+            <a class="nav-item" href="fantasticbeasts.html">Fantastic Beasts</a>
+            <a class="nav-item selected" href="adventurebuilder.html">Adventure Builder</a>
+        </nav>
+
+        <hr/>
+
+        <h2>Our Adventure</h2>
+
+        <p class="adventure">
+            We are exploring <span class="descriptor" id="location" onclick="newLocation()"></span>
+            that lies <span class="descriptor" id="area" onclick="newArea()"></span>
+            seeking the <span class="descriptor" id="objective" onclick="newObjective()"></span>
+        </p>
+
+        <p class="adventure">
+            We are here to <span class="descriptor" id="purpose" onclick="newPurpose()"></span>
+            guarded by <span class="descriptor" id="guardian1" onclick="newGuardian1()"></span>
+            and <span class="descriptor" id="guardian2" onclick="newGuardian2()"></span>
+        </p>
+
+    </div>
+
+    <script>
+        (function () {
+            "use strict";
+
+            var elements = {
+                "location": ["a remote ruin", "an overgrown necropolis", "the ruins of an ancient city", "a flooded settlement", "an abandoned village", "a twisting canyon", "a lost valley", "a long-forgotten road", "a legendary battle site", "a mysterious cavern"],
+                "area": ["on an uncharted island", "along the edge of a great swamp", "high in the mountains", "in a desolate wasteland", "in the freezing tundra", "deep in an ancient forest", "in the windswept badlands", "among the rolling dunes", "in a tropical jungle", "in the middle of hostile territory"],
+                "objective": ["temple of a dead deity.", "crypt of a forgotten hero.", "vault of the last dwarven king.", "prison of a bound demon.", "lair of a legendary beast.", "hideout of a notorious thief.", "cathedral of a fallen god.", "monastery of a mystic order.", "fortress of a tyrannical warlord.", "tower of a mad wizard."],
+                "purpose": ["find an ancient artifact", "search for a cure", "rescue someone in distress", "use a sacred site", "bring a villain to justice", "find the chosen one", "recover our souls", "stop the release of an ancient evil", "seek forbidden knowledge", "close an unholy portal"],
+                "guardian1": ["undead horrors", "crazed cultists", "twisted abominations", "ruthless assassins", "monstrous hordes", "foul demons", "deadly traps", "powerful constructs", "wild beasts", "skilled warriors"],
+                "guardian2": ["an un-living lord.", "an alien horror.", "a fallen angel.", "an ancient dragon.", "a powerful sorcerer.", "a despotic warrior.  ", "a zealous priest.", "an infernal fiend.", "a criminal mastermind.", "the one that betrayed us."]
+            };
+
+            function pickRandomFromList(list) {
+                var randomizedList = list.sort( function() { return 0.5 - Math.random() } );
+                return randomizedList.slice(0, 1);
+            }
+
+            function generateNewBeastProperty(propertyName) {
+                document.getElementById(propertyName).innerText = pickRandomFromList(elements[propertyName]);
+            }
+
+            window.newLocation = function newLocation() {
+                generateNewBeastProperty("location");
+            }
+
+            window.newArea = function newArea() {
+                generateNewBeastProperty("area");
+            }
+
+            window.newObjective = function newObjective() {
+                generateNewBeastProperty("objective");
+            }
+
+            window.newPurpose = function newPurpose() {
+                generateNewBeastProperty("purpose");
+            }
+
+            window.newGuardian1 = function newGuardian1() {
+                generateNewBeastProperty("guardian1");
+            }
+
+            window.newGuardian2 = function newGuardian2() {
+                generateNewBeastProperty("guardian2");
+            }
+
+            window.generateNewAdventure = function generateNewAdventure() {
+                newLocation();
+                newArea();
+                newObjective();
+                newPurpose();
+                newGuardian1();
+                newGuardian2();
+            }
+
+            generateNewAdventure();
+
+        }());
+    </script>
+</body>
+</html>
