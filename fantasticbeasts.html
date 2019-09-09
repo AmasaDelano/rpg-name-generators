@@ -5,26 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <style>
+        html {
+            background-color: #333;
+            color: white;
+        }
+
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 10px 10px 50px;
         }
 
+        .nav-item {
+            padding: 10px;
+            display: inline-block;
+            border: 1px solid white;
+            color: white;
+        }
+
+        .nav-item.selected {
+            background-color: #666;
+        }
+
         .beast {
             font-size: 1.5em;
-            color: black;
+            color: white;
         }
 
         .beast-type {
             font-size: 1em;
             display: inline;
             font-family: serif;
+            background-color: #333;
         }
 
         .beast-type,
         .descriptor {
-            color: darkblue;
+            color: lightblue;
             cursor: pointer;
         }
     </style>
@@ -35,6 +52,11 @@
     <div class="container">
 
         <h1>RPG Generators</h1>
+
+        <nav>
+            <a class="nav-item" href="index.html">NPC Names</a>
+            <a class="nav-item selected" href="fantasticbeasts.html">Fantastic Beasts</a>
+        </nav>
 
         <hr/>
 

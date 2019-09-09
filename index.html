@@ -5,10 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <style>
+        html {
+            background-color: #333;
+            color: white;
+        }
+
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 10px 10px 50px;
+        }
+
+        .nav-item {
+            padding: 10px;
+            display: inline-block;
+            border: 1px solid white;
+            color: white;
+        }
+
+        .nav-item.selected {
+            background-color: #666;
         }
         
         label {
@@ -19,6 +35,11 @@
 
         .setting {
             margin: 20px 0;
+        }
+
+        select {
+            background-color: #333;
+            color: white;
         }
 
         .generate-button {
@@ -46,11 +67,16 @@
 
     <div class="container">
 
-        <h1>RPG Name Generators</h1>
+        <h1>RPG Generators</h1>
+
+        <nav>
+            <a class="nav-item selected" href="index.html">NPC Names</a>
+            <a class="nav-item" href="fantasticbeasts.html">Fantastic Beasts</a>
+        </nav>
 
         <hr/>
 
-        <h2>Generate NPC Names</h2>
+        <h2>Your NPC Names</h2>
         
         <div class="settings">
             <div class="setting">
