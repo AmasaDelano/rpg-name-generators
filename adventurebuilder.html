@@ -99,11 +99,18 @@
 
             function pickRandomFromList(list) {
                 var randomizedList = list.sort( function() { return 0.5 - Math.random() } );
-                return randomizedList.slice(0, 1);
+                return randomizedList[0];
             }
 
             function generateNewBeastProperty(propertyName) {
-                document.getElementById(propertyName).innerText = pickRandomFromList(elements[propertyName]);
+                var propertyElement = document.getElementById(propertyName);
+                var currentPropertyValue = propertyElement.innerText;
+                var newPropertyValue = pickRandomFromList(
+                        elements[propertyName].filter(function(e) {
+                            return e !== currentPropertyValue;
+                        })
+                    );
+                propertyElement.innerText = newPropertyValue;
             }
 
             window.newLocation = function newLocation() {
