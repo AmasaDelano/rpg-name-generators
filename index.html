@@ -87,11 +87,11 @@
 
         <hr/>
 
-        <h2>Your NPC Names</h2>
+        <h2>Your Settlement's NPC Names</h2>
         
         <div class="settings">
             <div class="setting">
-                <label for="region">For this Region</label>
+                <label for="region">Region?</label>
                 <select id="region">
                     <option>Archaic</option>
                     <option selected>Westron</option>
@@ -101,7 +101,7 @@
             </div>
 
             <div class="setting">
-                <label for="occupations">With these Occupations</label>
+                <label for="occupations">Occupations?</label>
                 <select id="occupations" multiple size="18">
                     <option value="Desertfolk">Desertfolk</option>
                     <option value="Farmfolk">Farmfolk</option>
@@ -125,9 +125,9 @@
             </div>
 
             <div class="setting">
-                <label for="number">How many?</label>
+                <label for="number">How Many People?</label>
                 <select id="number">
-                    <option value="1">Just one</option>
+                    <option value="1">Just one person</option>
                     <option value="8" selected>Village (5-10)</option>
                     <option value="15">City (10-20)</option>
                 </select>
@@ -194,7 +194,7 @@
                 "Islanders": ["Bay", "Bayes", "Bayer", "Bayers", "Beacher", "Beach", "Blue", "Bowman", "Castaway", "Crabb", "Crab", "Crest", "Days", "Dayes", "Dunes", "Doons", "Doones", "Dunne", "Dunneman", "Eddy", "Fisher", "Fishman", "Flowers", "Harper", "Hook", "Hooke", "Iles", "Isles", "Ailes", "Mast", "Palmer", "Palms", "Rafman", "Raftman", "Reel", "Reelings", "Salt", "Seasalt", "Sands", "Sandman", "Seabreeze", "Shell", "Shellman", "Shellmound", "Sheller", "Shelley", "Shoals", "Singer", "Star", "Starr", "Stern", "Sterne", "Stillwater", "Storm", "Storms", "Summers", "Sunn", "Sunner", "Swimmer", "Shwimmer", "Swymmer", "Tidewater", "Waters", "Watters", "Waterman"],
                 "Masons/builders/miscellaneous crafters": ["Arch", "Archmaker", "Baskett", "Basket", "Bilder", "Builder", "Bulder", "Bilds", "Blow", "Brickman", "Bricker", "Brycks", "Bricks", "Burgh", "Berg", "Burg", "Burgher", "Berger", "Burger", "Carpenter", "Chandler", "Candler", "Clay", "Cooper", "Crafter", "Glass", "Glazier", "Glasier", "Hammer", "Maker", "Mason", "Masen", "Masyn", "Potts", "Pott", "Potter", "Quarrier", "Quarryman", "Rock", "Rockman", "Rocker", "Roof", "Roofe", "Sawyer", "Stone", "Stoneman", "Townes", "Towns", "Towny", "Wahl", "Wall", "Wahls", "Walls", "Waller", "Waxman", "Wax", "Wackes", "Wood", "Woods"],
                 "Miners/mountainfolk": ["Billy", "Billie", "Bluffe", "Bluffclimber", "Boulder", "Bulder", "Camp", "Campman", "Claymer", "Clayms", "Claimer", "Cole", "Coler", "Coleman", "Coalman", "Coaler", "Coaldigger", "Coledegger", "Condor", "Condorman", "Cragg", "Cragman", "Diggs", "Digger", "Diggman", "Digger", "Diggett", "Dragonhoard", "Dragonhord", "Dragon", "Drake", "Dredge", "Dredger", "Hall", "Haul", "Heights", "Hights", "Hytes", "Hites", "Highland", "Hills", "Hill", "Hillclimber", "Hylltopper", "Hoard", "Hord", "Hoar", "Hoardigger", "Hordegger", "Kidd", "Kipman", "Kipper", "Kipson", "Kopperfield", "Miner", "Myner", "Mynor", "Minor", "Mole", "Moler", "Moller", "Molson", "Molsen", "Ores", "Orr", "Orrs", "Oredigger", "Orrdegger", "Orson", "Orrsen", "Pan", "Pans", "Pannerman", "Panning", "Peaks", "Peeks", "Pike", "Pyke", "Pikeclimber", "Pyketopper", "Pix", "Pickman", "Pickes", "Pyckes", "Pickens", "Quarrier", "Quarryman", "Ridge", "Ridgeclimber", "Ridgetopper", "Rock", "Rockman", "Rocker", "Rockridge", "Snow", "Snowes", "Spade", "Spader Springs", "Springer", "Stone", "Stoneman", "Underhill", "Underwood", "Underman", "Walker"],
-                "Moneylenders/gemcutters/merchants": ["Barr", "Barre", "Cash", "Copper", "Coppers", "Curry", "Deals", "Deels", "Deel", "Deelaker", "Deelman. Diamond", "Glass", "Glazier", "Glasier", "Gold", "Golden", "Goldsmith", "Goldman", "Jewels", "Jules", "Jewls", "Lender", "Lenderman", "Lynder", "Mercer", "Money", "Munny", "Monny", "Munnee", "Monnee", "Peppers", "Pepper", "Rich", "Richman", "Richett", "Riches", "Saffron", "Sage", "Salt", "Scales", "Shine", "Ships", "Schipps", "Shipps", "Shipman", "Schippman", "Silver", "Sylver", "Silverman", "Small", "Smalls", "Spicer", "Spiceman", "Star", "Starr", "Thyme", "Ware", "Wool"],
+                "Moneylenders/gemcutters/merchants": ["Barr", "Barre", "Cash", "Copper", "Coppers", "Curry", "Deals", "Deels", "Deel", "Deelaker", "Deelman", "Diamond", "Glass", "Glazier", "Glasier", "Gold", "Golden", "Goldsmith", "Goldman", "Jewels", "Jules", "Jewls", "Lender", "Lenderman", "Lynder", "Mercer", "Money", "Munny", "Monny", "Munnee", "Monnee", "Peppers", "Pepper", "Rich", "Richman", "Richett", "Riches", "Saffron", "Sage", "Salt", "Scales", "Shine", "Ships", "Schipps", "Shipps", "Shipman", "Schippman", "Silver", "Sylver", "Silverman", "Small", "Smalls", "Spicer", "Spiceman", "Star", "Starr", "Thyme", "Ware", "Wool"],
                 "Priests/scholars/mages": ["Altarside", "Altarworthy", "Beacon", "Beecon", "Beeken", "Bell", "Bolt", "Bolte", "Bolter", "Bones", "Bright", "Burns", "Cast", "Caster", "Kast", "Chaplain", "Chaplin", "Church", "Churchside", "Darko", "Darkstar", "Darker", "Darkbrother", "Deacon", "Deecon", "Deeken", "Drake", "Draco", "Dragon", "Dreamer", "Dreemer", "Dreems", "Goodbrother", "Goodman", "Hecks", "Heckes", "Hex", "Holiday", "Holliday", "Holyday", "Hollier", "Holly", "Holier", "Hollison", "Hood", "Kearse", "Kerse", "Kerser", "Curser", "Monk", "Munk", "Nunn", "Nun", "Powers", "Preacher", "Preecher", "Priest", "Preest", "Sage", "Sageworthy", "Saint", "School", "Skool", "Skolar", "Scholyr", "Shock", "Shocker", "Shaka", "Skelton", "Skeltyn", "Smart", "Spelling", "Speller", "Star", "Starr", "Brightstar", "Teech", "Teeches", "Theery", "Tinker", "Tutor", "Tudor", "Vickers", "Vykar", "Vicker", "Vikars", "Wise", "Overwise", "Worthy", "Zapp", "Zappa"],
                 "Riverfolk": ["Banks", "Bankes", "Bend", "Benderman", "Blue", "Bridges", "Cray", "Craw", "Eddy", "Ferryman", "Ferrimen", "Ferry", "Fisher", "Fishman", "Flowers", "Garr", "Hook", "Hooke", "Hopper", "Iles", "Isles", "Ailes", "Mills", "Miller", "Oars", "Orrs", "Orr", "Oxbow", "Piers", "Peers", "Poleman", "Polman", "Porter", "Rafman", "Raftman", "Reed", "Reede", "Reedy", "Reel", "Reelings", "River", "Rivers", "Salmon", "Shell", "Shellman", "Sheller", "Shelley", "Silver", "Silvermoon", "Small", "Smalls", "Snails", "Snailman", "Spanner", "Stillwater", "Streams", "Streems", "Swimmer", "Shwimmer", "Swymmer", "Trout", "Waters", "Watters", "Waterman", "Whitewater", "Wurms", "Worms"],
                 "Seafolk": ["Anchor", "Ankor", "Anker", "Ballast", "Bay", "Bayes", "Bayer", "Bayers", "Beacon", "Biggs", "Bigg", "Brigg", "Briggs", "Bowman", "Capp", "Capman", "Castaway", "Crabb", "Crab", "Crabber", "Crabman", "Crest", "Darkwater", "Decks", "Decker", "Eddy", "Ferryman", "Ferrimen", "Ferry", "Fisher", "Fishman", "Hardy", "Hardison", "Harper", "Helms", "Helmsman", "Hook", "Hooke", "Iles", "Isles", "Ailes", "Mast", "Oars", "Orrs", "Orr", "Piers", "Peers", "Pitch", "Pytch", "Porter Redtide", "Blacktide", "Riggs", "Riggett", "Sailor", "Saylor", "Sailer", "Sayler", "Salt", "Seasalt", "Saltman", "Seabreeze", "Seaman", "Season", "Seeman", "Ships", "Schipps", "Shipps", "Shipman", "Schippman", "Shore", "Shoreman", "Singer", "Star", "Starr", "Stern", "Sterne", "Storm", "Storms", "Swimmer", "Shwimmer", "Swymmer", "Tar", "Tarr", "Tidewater", "Tuggs", "Tugman", "Waters", "Watters", "Waterman", "Whitewater"],
