@@ -162,6 +162,8 @@
 
     </div>
 
+    <script src="underscore-min.js"></script>
+    <script src="common.js"></script>
     <script>
         (function () {
             "use strict";
@@ -204,14 +206,9 @@
                 "Swampfolk": ["Banks", "Bankes", "Black", "Blacktide", "Greentide", "Boggs", "Bogg", "Bogs", "Bull", "Buzzfly", "Blackfly", "Shoefly", "Cray", "Craw", "Cricketts", "Crickets", "Darkwater", "Dragonfly", "Dragon", "Eeler", "Ealer", "Eeles", "Eales", "Fisher", "Fishman", "Frogg", "Frogman", "Green", "Greene", "Greenwater", "Blackwater", "Grey", "Gray", "Grove", "Groves", "Hook", "Hooke", "Hopper", "Marsh", "Mayfly", "May", "Moss", "Mosstree", "Greentree", "Poisonweed", "Poisonwood", "Polly", "Pollywog", "Polliwog", "Rafman", "Raftman", "Ratt", "Ratman", "Reed", "Reede", "Reedy", "River", "Rivers", "Rotten", "Rotman", "Scales", "Greenscale", "Blackscale", "Shell", "Shellman", "Sheller", "Shelley", "Skeeter", "Skito", "Small", "Smalls", "Snails", "Snailman", "Stillwater", "Swimmer", "Shwimmer", "Swymmer", "Thick", "Thicke", "Tidewater", "Vines", "Waters", "Watters", "Wurms", "Worms"],
                 "Townfolk/cityfolk": ["Alley", "Allie", "Bailey", "Bell", "Berg", "Berger", "Burg", "Burger", "Brickman", "Brickhouse", "Bridges", "Court", "Gardner", "Gardiner", "Hall", "Heap", "Hightower", "Hood", "House", "Lane", "Lain", "Laine", "Lodge", "Lodges", "Park", "Parks", "Plaza", "Rhoads", "Rhodes", "Roades", "Roof", "Spanner", "Stairs", "Street", "Streets", "Towers", "Towns", "Townsend", "Townes", "Towny", "Towney", "Vista", "Wall", "Wahl", "Woodhouse"],
                 "Woodsfolk": ["Ackes", "Ax", "Archer", "Berry", "Biggs", "Bigg", "Birch", "Byrch", "Bird", "Byrd", "Birdett", "Byrdman", "Bloom", "Bowman", "Branch", "Brush", "Buck", "Deere", "Deerman", "Doe", "Feller", "Fletcher", "Flowers", "Forester", "Forrester", "Forrest", "Fox", "Foxx", "Gardner", "Gardener", "Gardiner", "Green", "Greene", "Grove", "Groves", "Harper", "Hatchet", "Hunter", "Huntsman", "Hyde", "Hides", "Hydes", "Jack", "Lodge", "Lodges", "Meadows", "Mole", "Moler", "Moller", "Moss", "Mosstree", "Greentree", "Oaks", "Oakes", "Pine", "Pines", "Pyne", "Pynes", "Sawyer", "Silver", "Silvermoon", "Singer", "Springs", "Springer", "Strider", "Stryder", "Tanner", "Tannerman", "Thick", "Thicke", "Walker", "Woods", "Wood", "Woode", "Wooden", "Woodyn"]
-            }
+            };
 
             window.generateNames = function generateNames() {
-
-                function pickRandomFromList(number, list) {
-                    var randomizedList = list.sort( function() { return 0.5 - Math.random() } );
-                    return randomizedList.slice(0, number);
-                }
 
                 function addListItemsTo(parentElement, list) {
                     parentElement.innerHTML = "";
@@ -225,22 +222,8 @@
                 var number = document.getElementById("number").value;
 
                 var region = document.getElementById("region").value;
-                addListItemsTo(document.getElementById("female-names"), pickRandomFromList(number, firstNames[region]["Female"]));
-                addListItemsTo(document.getElementById("male-names"), pickRandomFromList(number, firstNames[region]["Male"]));
-
-                // Return an array of the selected opion values
-                // select is an HTML select element
-                function getSelectValues(select) {
-                    var options = select && select.options;
-
-                    var result = [];
-                    for (var option of options) {
-                        if (option.selected) {
-                            result.push(option.value || option.text);
-                        }
-                    }
-                    return result;
-                }
+                addListItemsTo(document.getElementById("female-names"), pickRandomFromList(firstNames[region]["Female"], number));
+                addListItemsTo(document.getElementById("male-names"), pickRandomFromList(firstNames[region]["Male"], number));
 
                 var occupations = getSelectValues(document.getElementById("occupations"));
                 console.log(occupations);
@@ -248,7 +231,7 @@
                 var numberOfEachSurname = Math.round(number / occupations.length);
                 for (var occupation of occupations) {
                     console.log(occupation);
-                    generatedSurnames = generatedSurnames.concat(pickRandomFromList(numberOfEachSurname, surnames[occupation]));
+                    generatedSurnames = generatedSurnames.concat(pickRandomFromList(surnames[occupation], numberOfEachSurname));
                 }
                 addListItemsTo(document.getElementById("surnames"), generatedSurnames);
 

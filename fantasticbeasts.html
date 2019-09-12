@@ -104,6 +104,8 @@
 
     </div>
 
+    <script src="underscore-min.js"></script>
+    <script src="common.js"></script>
     <script>
         (function () {
             "use strict";
@@ -193,11 +195,6 @@
                     "looking-for": ["something to preserve to eat later", "a lair with an entrance hidden from view", "an individual marked by its master", "an opportunity to impress its master", "the frozen corpse of a long-dead frost titan", "an item that can call blizzards"]
                 }
             };
-
-            function pickRandomFromList(list) {
-                var randomizedList = list.sort( function() { return 0.5 - Math.random() } );
-                return randomizedList[0];
-            }
 
             function getType() {
                 var type = document.getElementById("type").value;
