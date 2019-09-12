@@ -3,7 +3,7 @@
     // Pick a random number of items from a list.
     window.pickRandomFromList = function pickRandomFromList(list, number) {
         var randomizedList = _.shuffle(list);
-        return randomizedList[number || 0];
+        return randomizedList.slice(0, number || 1);
     }
 
     // Return an array of the selected opion values
