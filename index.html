@@ -230,6 +230,7 @@
                     console.log(occupation);
                     generatedSurnames = generatedSurnames.concat(pickRandomFromList(surnames[occupation], numberOfEachSurname));
                 }
+                generatedSurnames = _.shuffle(generatedSurnames);
                 
                 // Add a surname to the end of each name.
                 femaleNames = femaleNames.map(function (name, index) {
