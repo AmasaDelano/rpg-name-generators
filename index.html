@@ -225,18 +225,19 @@
                 // Pick surnames based on occupation.
                 var occupations = getSelectValues(document.getElementById("occupations"));
                 var generatedSurnames = [];
-                var numberOfEachSurname = Math.round(number * 2 / occupations.length);
+                var numberOfEachSurname = Math.ceil(number * 2 / occupations.length);
                 for (var occupation of occupations) {
                     console.log(occupation);
                     generatedSurnames = generatedSurnames.concat(pickRandomFromList(surnames[occupation], numberOfEachSurname));
                 }
+                generatedSurnames = _.shuffle(generatedSurnames);
                 
                 // Add a surname to the end of each name.
                 femaleNames = femaleNames.map(function (name, index) {
-                    return name + " " + generatedSurnames[index];
+                    return name + " " + (generatedSurnames[index] || "");
                 });
                 maleNames = maleNames.map(function (name, index) {
-                    return name + " " + generatedSurnames[index + femaleNames.length];
+                    return name + " " + (generatedSurnames[index + femaleNames.length] || "");
                 });
 
                 // Add the generated names to the page.
