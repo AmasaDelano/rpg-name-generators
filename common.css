@@ -1,0 +1,44 @@
+/* WHOLE DOCUMENT */
+
+html {
+    background-color: #333;
+    color: white;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 10px 10px 50px;
+}
+
+/* HEADER */
+
+.nav-item {
+    padding: 10px;
+    display: inline-block;
+    border: 1px solid white;
+    color: white;
+}
+
+.nav-item.selected {
+    background-color: #666;
+}
+
+/* SHARED CONTENT */
+
+.generate-button {
+    padding: 15px;
+    font-size: 1.2em;
+    margin: 20px 0;
+    display: block;
+}
+
+/* FOOTER */
+
+footer {
+    margin-top: 100px;
+}
+
+footer a {
+    color: white;
+}

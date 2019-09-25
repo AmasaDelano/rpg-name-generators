@@ -1,32 +1,14 @@
-<html doctype="html">
+<!DOCTYPE html>
+<html>
 <head>
     <title>Build an Adventure</title>
 
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <link rel="stylesheet" type="text/css" href="common.css" />
     <style>
-        html {
-            background-color: #333;
-            color: white;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 10px 10px 50px;
-        }
-
-        .nav-item {
-            padding: 10px;
-            display: inline-block;
-            border: 1px solid white;
-            color: white;
-        }
-
-        .nav-item.selected {
-            background-color: #666;
-        }
-
+        
         .adventure {
             font-size: 1.5em;
             color: white;
@@ -36,16 +18,7 @@
             color: lightblue;
             cursor: pointer;
         }
-
-        /* FOOTER */
-
-        footer {
-            margin-top: 100px;
-        }
-
-        footer a {
-            color: white;
-        }
+        
     </style>
 </head>
 
@@ -57,6 +30,7 @@
 
         <nav>
             <a class="nav-item" href="index.html">NPC Names</a>
+            <a class="nav-item" href="instantnpc.html">Instant NPC</a>
             <a class="nav-item" href="fantasticbeasts.html">Fantastic Beasts</a>
             <a class="nav-item selected" href="adventurebuilder.html">Adventure Builder</a>
         </nav>
@@ -76,6 +50,8 @@
             guarded by <span class="descriptor" id="guardian1" onclick="newGuardian1()"></span>
             and <span class="descriptor" id="guardian2" onclick="newGuardian2()"></span>
         </p>
+
+        <input class="generate-button" type="button" onclick="generateNewAdventure()" value="REGENERATE" />
 
         <footer>
             <hr/>
@@ -99,7 +75,7 @@
                 "guardian2": ["an un-living lord.", "an alien horror.", "a fallen angel.", "an ancient dragon.", "a powerful sorcerer.", "a despotic warrior.  ", "a zealous priest.", "an infernal fiend.", "a criminal mastermind.", "the one that betrayed us."]
             };
 
-            function generateNewBeastProperty(propertyName) {
+            function generateNewAdventureProperty(propertyName) {
                 var propertyElement = document.getElementById(propertyName);
                 var currentPropertyValue = propertyElement.innerText;
                 var newPropertyValue = pickRandomFromList(
@@ -111,27 +87,27 @@
             }
 
             window.newLocation = function newLocation() {
-                generateNewBeastProperty("location");
+                generateNewAdventureProperty("location");
             }
 
             window.newArea = function newArea() {
-                generateNewBeastProperty("area");
+                generateNewAdventureProperty("area");
             }
 
             window.newObjective = function newObjective() {
-                generateNewBeastProperty("objective");
+                generateNewAdventureProperty("objective");
             }
 
             window.newPurpose = function newPurpose() {
-                generateNewBeastProperty("purpose");
+                generateNewAdventureProperty("purpose");
             }
 
             window.newGuardian1 = function newGuardian1() {
-                generateNewBeastProperty("guardian1");
+                generateNewAdventureProperty("guardian1");
             }
 
             window.newGuardian2 = function newGuardian2() {
-                generateNewBeastProperty("guardian2");
+                generateNewAdventureProperty("guardian2");
             }
 
             window.generateNewAdventure = function generateNewAdventure() {
