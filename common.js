@@ -1,8 +1,11 @@
 (function () {
 
     // Pick a random number of items from a list.
-    window.pickRandomFromList = function pickRandomFromList(list, number) {
+    window.pickRandomFromList = function pickRandomFromList(list, number, excluding) {
         var randomizedList = _.shuffle(list);
+        randomizedList = randomizedList.filter(function(item) {
+            return item !== excluding;
+        });
         return randomizedList.slice(0, number || 1);
     }
 
