@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate a City</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" type="text/css" href="../common.css" />
+    <style>
+        
+        .city,
+        .market-good {
+            font-size: 1.5em;
+            color: white;
+        }
+
+        .type {
+            font-size: 1em;
+            display: inline;
+            font-family: serif;
+            background-color: #333;
+        }
+
+        .type,
+        .descriptor {
+            color: lightblue;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>RPG Generators</h1>
+
+        <nav>
+            <a class="nav-item" href="../">NPC Names</a>
+            <a class="nav-item" href="../instantnpc/">Instant NPC</a>
+            <a class="nav-item selected" href="../instantcity/">Instant City</a>
+            <a class="nav-item" href="../fantasticbeasts/">Fantastic Beasts</a>
+            <a class="nav-item" href="../adventurebuilder/">Adventure Builder</a>
+        </nav>
+
+        <hr/>
+
+        <h2>Your City</h2>
+
+        <p class="city">
+            Your city grew up around <span id="geography" class="descriptor" onclick="newGeography()"></span> and is near a region ideal for <span id="resource-verb"></span> <span id="resource" class="descriptor" onclick="newResource()"></span>.
+            The city is known for its <span id="culture" class="descriptor" onclick="newCulture()"></span> and is ruled by <span id="government" class="descriptor" onclick="newGovernment()"></span>.
+            In the past, the city experienced <span id="historical-event" class="descriptor" onclick="newHistoricalEvent()"></span>.
+        </p>
+        <p class="city">
+            The people of the city (leaders, commonfolk, or both) are fearful of <span id="threat" class="descriptor" onclick="newThreat()"></span> and the city is defended by <span id="defense" class="descriptor" onclick="newDefense()"></span>.
+            The laws are <span id="law-enforcement" class="descriptor" onclick="newLawEnforcement()"></span> and the true power (in or out of the government) is held by <span id="power-players" class="descriptor" onclick="newPowerPlayers()"></span>.
+        </p>
+        <p class="city">
+            The city has 
+            <select class="type" id="market-size" onchange="generateMarket()">
+                <option value="0" selected>no market</option>
+                <option value="5">a small market</option>
+                <option value="12">a thriving market</option>
+            </select>
+            <span id="market-connector-text">.</span>
+            <ol id="market-goods">
+            </ol>
+        </p>
+
+        <input class="generate-button" type="button" onclick="generateNewCity()" value="REGENERATE" />
+
+        <footer>
+            <hr/>
+            Credit to <a href="https://www.reddit.com/r/BehindTheTables/wiki/index" target="_blank">OrkishBlade</a> for the text.
+        </footer>
+
+    </div>
+
+    <script src="../underscore-min.js"></script>
+    <script src="../common.js"></script>
+    <script>
+        (function () {
+            "use strict";
+
+            var geography = ["a coastal harbor", "a calm, coastal bay", "a large freshwater lake", "a wide, navigable river", "a river navigable by small craft", "the mouth of a river or a river delta", "the confluence of two rivers", "a series of natural springs", "a well-traveled crossroads", "a water source and a well-traveled road"];
+            
+            // Possible resource verbs: mining, growing, or grazing
+            var resource = [
+                {
+                    "name": "iron ore",
+                    "verb": "mining"
+                },
+                {
+                    "name": "copper ore",
+                    "verb": "mining"
+                },
+                {
+                    "name": "gold or silver deposits",
+                    "verb": "mining"
+                },
+                {
+                    "name": "clay or granite deposits",
+                    "verb": "mining"
+                },
+                {
+                    "name": "quartz or salt deposits",
+                    "verb": "mining"
+                },
+                {
+                    "name": "peat or coal deposits",
+                    "verb": "mining"
+                },
+                {
+                    "name": "hardwood lumber",
+                    "verb": "growing"
+                },
+                {
+                    "name": "barley and oats",
+                    "verb": "growing"
+                },
+                {
+                    "name": "beans and corn",
+                    "verb": "growing"
+                },
+                {
+                    "name": "nuts and olives",
+                    "verb": "growing"
+                },
+                {
+                    "name": "rice or wheat",
+                    "verb": "growing"
+                },
+                {
+                    "name": "potatoes and leeks",
+                    "verb": "growing"
+                },
+                {
+                    "name": "sugar cane",
+                    "verb": "growing"
+                },
+                {
+                    "name": "tobacco",
+                    "verb": "growing"
+                },
+                {
+                    "name": "cotton",
+                    "verb": "growing"
+                },
+                {
+                    "name": "fruit trees",
+                    "verb": "growing"
+                },
+                {
+                    "name": "cabbages and beets",
+                    "verb": "growing"
+                },
+                {
+                    "name": "cattle",
+                    "verb": "grazing"
+                },
+                {
+                    "name": "dairy cows",
+                    "verb": "grazing"
+                },
+                {
+                    "name": "sheep",
+                    "verb": "grazing"
+                }
+            ];
+
+            var culture = ["architectural style", "architectural feats", "artists and poets", "inventive cuisine", "traditional cuisine", "suggestive dancing", "gladiatorial games", "horse races", "scholars and sages", "music and/or dance", "romance", "jousting games", "superior soldiers", "street festivals", "religious feasts", "religious fervor", "traditional dress", "unusual dress", "theater scene", "wine and/or ale"];
+
+            var government = ["the head of a noble family", "a council of distinguished nobles", "a council of wealthy merchants", "a council of elected officials", "an elected mayor", "a benevolent sovereign", "a wicked tyrant", "a brutal warlord", "a cabal of witches and wizards", "the leaders of a religious order"];
+
+            var historicalEvent = ["mass conversions", "an earthquake", "an age of exploration", "a terrible famine", "a disastrous flood", "a legendary storm", "an assassination", "a series of riots", "a great discovery", "a vermin infestation", "a destructive fire", "a deadly plague", "a bloody rebellion", "a lengthy siege", "religious wars", "territorial wars", "a foreign occupation", "an economic boom", "a great depression", "a dragon attack"];
+
+            var threat = ["bandits and outlaws", "barbarian invasions", "disease outbreaks", "a dragon or legendary beast", "destructive flooding", "food shortages", "occupation by a foreign empire", "the wrath of a vengeful god", "magic and new inventions", "pirates, smugglers, and bands of thieves", "a recently established religion", "a rival city"];
+
+            var defense = ["a disciplined military guard", "a standing army of devoted soldiers", "a company of sellswords and knaves", "an order of holy knights", "little; the city’s been sacked many times", "a huge, fortress or citadel within the city", "a series of watchtowers and forts spread throughout the region", "thick stone walls and impenetrable gates", "high stone walls, catapults, and scorpions", "a powerful magical ward or gigantic golem"];
+
+            var lawEnforcement = ["enforced by a strict, orderly city watch", "enforced by a corrupt, roguish city watch", "not enforced among the wealthy elite", "enforced in a haphazard fashion, incomprehensible to visitors", "not enforced for those who pay bribes", "more like guidelines", "enforced by a secret society of assassins, mages, or priests", "enforced by a company of mercenaries", "simple, easy to learn and to follow", "extensive and complicated, nonsensical", "enforced by a cheerful drunken sheriff", "enforced by a rigid soldier-turned-sheriff"];
+
+            var powerPlayers = ["a ruthless assassins’ guild", "a populist demagogue", "the captain of a mercenary company", "a champion knight or arena fighter", "one or more crafting guilds", "a dangerous crime boss", "one or more criminal gangs", "a charismatic cult leader", "one or more merchant guilds", "a scheming noble lord or lady", "an outspoken philosopher or scholar", "a celebrated poet and playwright", "a popular priest or priestess", "a secret society of lorekeepers", "smugglers and black market dealers", "the son or daughter of a deposed ruler", "a wealthy trader of exotic goods", "a conniving vampire or fiend", "a bold war hero", "a clever witch or wizard"];
+
+            window.newGeography = function newGeography() {
+                var element = document.getElementById("geography");
+                element.innerText = pickRandomFromList(geography, 1, element.innerText);
+            }
+
+            window.newResource = function newResource() {
+                var resourceVerbElement = document.getElementById("resource-verb");
+                var resourceNameElement = document.getElementById("resource");
+
+                var currentResource = resource.find(r => r.name == resourceNameElement.innerText);
+
+                var newResource = pickRandomFromList(resource, 1, currentResource);
+
+                resourceVerbElement.innerText = newResource[0].verb;
+                resourceNameElement.innerText = newResource[0].name;
+            }
+
+            window.newCulture = function newCulture() {
+                var element = document.getElementById("culture");
+                element.innerText = pickRandomFromList(culture, 1, element.innerText);
+            }
+
+            window.newGovernment = function newGovernment() {
+                var element = document.getElementById("government");
+                element.innerText = pickRandomFromList(government, 1, element.innerText);
+            }
+
+            window.newHistoricalEvent = function newHistoricalEvent() {
+                var element = document.getElementById("historical-event");
+                element.innerText = pickRandomFromList(historicalEvent, 1, element.innerText);
+            }
+
+            window.newThreat = function newThreat() {
+                var element = document.getElementById("threat");
+                element.innerText = pickRandomFromList(threat, 1, element.innerText);
+            }
+
+            window.newDefense = function newDefense() {
+                var element = document.getElementById("defense");
+                element.innerText = pickRandomFromList(defense, 1, element.innerText);
+            }
+
+            window.newLawEnforcement = function newLawEnforcement() {
+                var element = document.getElementById("law-enforcement");
+                element.innerText = pickRandomFromList(lawEnforcement, 1, element.innerText);
+            }
+            
+            window.newPowerPlayers = function newPowerPlayers() {
+                var element = document.getElementById("power-players");
+                element.innerText = pickRandomFromList(powerPlayers, 1, element.innerText);
+            }
+
+            var marketGoods = ["Ale by the pint", "Amulets and totems", "Apples", "Attractive young slaves (bedmates)", "Axes and hammers", "Bearskin rugs and capes", "Beer by the barrel", "Biscuits and rolls", "Blankets and pillows", "Blessings", "Bouquets of flowers", "Bows and arrows", "Brass candlesticks, plates, and lamps", "Brass horns and flutes", "Cabbages", "Candles and candlesticks", "Carrots", "Carved stone figures", "Carved wooden figures", "Ceramic vases and cups", "Cheap jewelry and trinkets", "Cherries", "Clay pots, bowls, cups, and vases", "Coal", "Copper bowls, spoons, kettles, cups", "Corn on the cob", "Cotton shirts and pants", "Dogs and cats", "Domestic slaves (maidservants)", "Dried fish", "Dried herbs", "Dried venison", "Dried whole grain", "Drums and bells", "Exotic spices", "Exotic teas", "Firewood", "Flower seeds", "Foreign books", "Foreign coins", "Fresh bread", "Fresh fish", "Fruit pies", "Glass bottles, jars, vials, and cups", "Hardy slaves (laborers)", "Hot soup", "Iron candlesticks and tools", "Iron pots and pans", "Knives, forks, spoons and cooking utensils", "Lamps, lanterns, and oil", "Leather boots and caps", "Live poultry", "Lutes and fiddles", "Manure", "Meat pies", "Medicinal teas", "Onions", "Pears and plums", "Perfumes and scented oils", "Piglets", "Poisons and remedies", "Polished stones and crystals", "Potatoes", "Potions", "Potted herbs", "Quarrels and crossbows", "Rats and pigeons", "Rope", "Rough-cut gems", "Saddles and bridles", "Salted pork", "Saplings", "Scented candles", "Seasonal berries", "Shields and helms", "Shiny leather shoes", "Silk shirts and scarves", "Snakeskin boots", "Soap", "Stone-ground flour", "Sturdy leather shoes", "Swords and spears", "Tables and chairs", "Tankards and mugs", "Tarot readings", "Torches and rations", "Traditional spices", "Turnips", "Used books", "Used horses and ponies", "Wagons and carts", "Waterskins and wineskins", "Whale oil", "Wine by the barrel", "Wine by the bottle", "Wolfskin rugs and capes", "Wooden-soled shoes", "Wool shirts and caps", "Woven baskets", "Young horses and ponies"];
+
+            window.generateMarket = function generateMarket() {
+                var marketGoodsElement = document.getElementById("market-goods");
+                marketGoodsElement.innerHTML = "";
+
+                var marketSizeElement = document.getElementById("market-size");
+                var marketSize = getSelectValues(marketSizeElement);
+                marketSize = parseInt(marketSize[0], 10);
+
+                var connectorText = document.getElementById("market-connector-text");
+
+                if (marketSize === 0) {
+                    connectorText.innerText = ".";
+                    return;
+                }
+
+                connectorText.innerText = " which sells these goods:";
+
+                var selectedGoods = pickRandomFromList(marketGoods, marketSize);
+
+                for (var selectedGood of selectedGoods) {
+                    var newListItem = document.createElement("li");
+                    newListItem.innerText = selectedGood;
+                    newListItem.className = "market-good";
+
+                    marketGoodsElement.appendChild(newListItem);
+                }
+            }
+
+            window.generateNewCity = function generateNewCity() {
+                newGeography();
+                newResource();
+                newCulture();
+                newGovernment();
+                newHistoricalEvent();
+                newThreat();
+                newDefense();
+                newLawEnforcement();
+                newPowerPlayers();
+
+                generateMarket();
+            }
+
+            generateNewCity();
+
+            // Preventing descriptors from being highlighted
+            // on double-click only.
+            for (var descriptor of document.getElementsByClassName("descriptor")) {
+                descriptor.addEventListener("mousedown", function (event) {
+                    if (event.detail > 1) {
+                        event.preventDefault();
+                    }
+                }, false);
+            }
+
+        }());
+    </script>
+</body>
+</html>

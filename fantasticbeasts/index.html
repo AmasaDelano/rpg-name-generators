@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate a Fantastic Beast</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" type="text/css" href="../common.css" />
+    <style>
+        
+        .beast {
+            font-size: 1.5em;
+            color: white;
+        }
+
+        .beast-type {
+            font-size: 1em;
+            display: inline;
+            font-family: serif;
+            background-color: #333;
+        }
+
+        .beast-type,
+        .descriptor {
+            color: lightblue;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>RPG Generators</h1>
+
+        <nav>
+            <a class="nav-item" href="../">NPC Names</a>
+            <a class="nav-item" href="../instantnpc/">Instant NPC</a>
+            <a class="nav-item" href="../instantcity/">Instant City</a>
+            <a class="nav-item selected" href="../fantasticbeasts/">Fantastic Beasts</a>
+            <a class="nav-item" href="../adventurebuilder/">Adventure Builder</a>
+        </nav>
+
+        <hr/>
+
+        <h2>Your Fantastic Beast</h2>
+
+        <p class="beast">
+            Your
+            <select id="type" class="beast-type" onchange="generateNewBeast()">
+                <option>Aberrant</option>
+                <option selected>Celestial</option>
+                <option>Demonic</option>
+                <option>Fey</option>
+                <option>Infernal</option>
+                <option>Shadow</option>
+                <option>Fire</option>
+                <option>Legendary</option>
+                <option>Sea</option>
+                <option>Storm</option>
+                <option>Undead</option>
+                <option>Winter</option>
+            </select>
+            beast <span id="look-verb">is</span> <span class="descriptor" id="look" onclick="newLook()"></span>,
+            has <span class="descriptor" id="has1" onclick="newHas1()"></span><span id="legendary">, and is known for <span class="descriptor" id="known-for" onclick="newKnownFor()"></span>.</span>
+            <span id="not-legendary">
+                and <span class="descriptor" id="has2" onclick="newHas2()"></span>,
+                and is looking for <span class="descriptor" id="looking-for" onclick="newLookingFor()"></span>.
+            </span>
+        </p>
+
+        <input class="generate-button" type="button" onclick="generateNewBeast()" value="REGENERATE" />
+
+        <footer>
+            <hr/>
+            Credit to <a href="https://www.reddit.com/r/BehindTheTables/wiki/index" target="_blank">OrkishBlade</a> for the text.
+        </footer>
+
+    </div>
+
+    <script src="../underscore-min.js"></script>
+    <script src="../common.js"></script>
+    <script>
+        (function () {
+            "use strict";
+
+            var beasts = {
+                "Aberrant": {
+                    "look-verb": "looks a good bit like",
+                    "look": ["an ape", "a bat", "a centipede", "a crow", "a fish", "a jellyfish", "a lizard", "a lobster", "an octopus", "a panther", "a spider", "a vulture"],
+                    "has1": ["tentacles where you expect eyes", "a blind, jawed worm for a tongue", "a large single, lidless eye", "several extra eyes", "slime covering its body", "small tentacles covering its body", "dexterous tentacles it uses like hands", "an unpleasant, briny odor"],
+                    "has2": ["moves by floating eerily in air or water", "moves by slithering or scuttling", "can teleport in a swirl of shadows", "can fade away and reappear elsewhere", "shambles awkwardly across the ground", "glides smoothly over the ground or water", "mutters darkly to itself", "whispers strange desires to mortals"],
+                    "looking-for": ["a brain to devour", "a host to infect with its parasitic larva", "a mortal to enslave", "a mortal to present to its master", "an opportunity to overthrow its master", "someone to lovingly caress"]
+                },
+                "Celestial": {
+                    "look-verb": "appears in the form of",
+                    "look": ["a badger", "a bull", "a dove", "an eagle", "a griffon", "a hound", "a horse", "a lion", "a serpent", "a stag", "a swan"],
+                    "has1": ["shining golden eyes", "sympathetic pale blue or grey eyes", "eyes full of knowledge and judgment", "a crown of gold", "wings of the pure white feathers", "pristine white feathers or fur", "an aura of glowing light", "an aura of peacefulness"],
+                    "has2": ["moves gracefully, almost gliding", "carries itself proudly", "has a gentle manner", "speaks eloquently", "speaks in poetic riddles", "fills you with a sense of peace"],
+                    "looking-for": ["an answer to a cosmic riddle", "a mortal worthy of its service", "a mortal worthy of serving its master", "a mortal condemned to die by its master", "a mortal who has succumbed to temptation", "an item of importance to its master", "the location of an ancient, hidden evil", "the resting place of a great hero"]
+                },
+                "Demonic": {
+                    "look-verb": "appears in the form of",
+                    "look": ["an ape", "a boar", "a drake", "a goat", "a horse", "a hyena", "a manticore", "a scorpion", "a serpent", "a spider", "a vulture", "a wolf"],
+                    "has1": ["glowing red eyes", "dark, sinister eyes", "unsettling stripes or markings", "unusually long, sharp claws or talons", "a pincer where you expect a claw or foot", "huge horns or tusks", "an unwholesome odor", "an odor of decay"],
+                    "has2": ["powerful hind legs for leaping and pouncing", "a slavering maw", "rows of wicked looking teeth", "vicious fangs", "bony spikes running down its back", "fins or ridges running down its back", "black or grey, leathery wings", "a ferocious howl or roar"],
+                    "looking-for": ["blood to spill", "bones to crunch", "a soul to burn", "a soul to devour", "a fight", "the loathsome mage who summoned it"]
+                },
+                "Fey": {
+                    "look-verb": "is",
+                    "look": ["a bear", "a beaver", "a boar", "an elk", "a hawk", "an owl", "an owlbear", "a panther", "a songbird", "a swan", "a toad", "a wolf"],
+                    "has1": ["unusually bright coloration", "unusual stripes or markings", "captivating, blue or grey eyes", "mischievous, green or gold eyes", "a shimmering aura", "a misty aura"],
+                    "has2": ["moves gracefully, almost dancing", "darts in and out of hiding places", "can create an illusory double of itself", "can teleport short distances", "speaks in rhymes and riddles", "speaks in songs", "gives you an uneasy feeling", "relishes in playful pranks and hijinks"],
+                    "looking-for": ["an answer to an ancient riddle", "a mortal worthy of its service", "a mortal to torment and to tease", "an artifact of an elvish hero of a past age", "the location of an ancient, elvish ruin", "the source of corruption near its home", "the recipient of a specific, secret message", "a new song to sing"]
+                },
+                "Infernal": {
+                    "look-verb": "appears in the form of",
+                    "look": ["a bat", "a drake", "a hound", "a horse", "a falcon", "a lizard", "a panther", "a raven", "a scorpion", "a serpent", "a worm", "a wyvern"],
+                    "has1": ["glowing red eyes", "pale, sinister eyes", "reddish skin around the face", "several short horns or tusks", "curled horns or tusks", "long pointy horns", "an odor of brimstone", "an aura of choking smoke"],
+                    "has2": ["powerful hind legs for leaping and pouncing", "speaks in a hissing voice", "speaks in a growling voice", "a forked tongue", "poisonous fangs", "red or black, leathery wings", "black or grey, feathered wings", "a tail with a venomous stinger"],
+                    "looking-for": ["a mortal to tempt and to corrupt", "a soul to collect for its master", "a soul to torment", "an opportunity to overthrow its master", "a specific mortal who sold his or her soul", "an item of great power and evil"]
+                },
+                "Shadow": {
+                    "look-verb": "is",
+                    "look": ["a bat", "a centipede", "a monkey", "an owl", "a panther", "a rat", "a raven", "a serpent", "a spider", "a vulture", "a wolf", "a wyvern"],
+                    "has1": ["dark, sinister eyes", "pale, glowing eyes", "dark stripes or markings", "eerie grey coloration", "venomous fangs", "blackened teeth", "an aura of gloom", "an odor of death"],
+                    "has2": ["can disappear into shadows", "can teleport in a swirl of shadows", "moves without a sound", "speaks in rhymes and riddles", "gives you an uneasy feeling", "a mournful howl or cry"],
+                    "looking-for": ["a soul to devour", "dead flesh to eat", "something to kill", "a place to lair among ghosts", "the location of an ancient lich's tomb", "a dark hole in which to wait for prey", "share a tale of terror and death", "the loathsome mage who summoned it"]
+                },
+                "Fire": {
+                    "look-verb": "is",
+                    "look": ["a basilisk", "a bat", "a beetle", "a drake", "a fox", "a griffon", "a hawk", "a hound", "a lizard", "a scorpion", "a serpent", "a worm"],
+                    "has1": ["glowing red eyes", "bright, golden eyes", "reddish skin around the face", "a blackened beak or set of teeth", "an burnt odor", "an odor of brimstone", "an aura of flickering flames", "an aura of choking smoke"],
+                    "has2": ["exhales smoke when it breathes", "can exhale a spout of flame", "gives off an uncomfortable amount of heat", "leaves a trail of flames in its wake", "can set things ablaze with a touch", "can disappear in a blinding flash of fire", "explodes in a fiery cloud if it is slain", "sheds dim, orange light"],
+                    "looking-for": ["something to burn and to consume", "a lair with walls that can withstand flames", "an individual marked by its master", "an opportunity to impress its master", "the scorched skull of a long-dead fire titan", "an item that grants mastery over flames"]
+                },
+                "Legendary": {
+                    "look-verb": "is",
+                    "look": ["a basilisk", "a bear", "a chimera", "a drake", "an eagle", "a griffon", "a hound", "a kraken", "a lion", "a manticore", "an owlbear", "a serpent"],
+                    "has1": ["unnatural intelligence", "the power of speech", "an especially savage manner", "a frightening howl or cry", "a mournful howl or cry", "an immense size", "unusual coloration or markings", "a terrible scar on its face", "a terrible scar on its body", "a missing eye"],
+                    "known-for": ["slaying a well-known hero", "slaying a notorious villain", "laying ruin to a city or town", "sinking a ship or scattering a caravan", "leaving a trail of destruction in its wake", "lairing in a dangerous place", "lairing in a holy place", "hunting along a well-traveled road", "toying with its prey before the kill", "protecting the people who live near it"]
+                },
+                "Sea": {
+                    "look-verb": "is",
+                    "look": ["a beetle", "a centipede", "a drake", "a horse", "a lion", "a monkey", "a scorpion", "a serpent", "a spider", "a turtle", "a worm", "a wyvern"],
+                    "has1": ["lidless, golden eyes", "unblinking, green eyes", "iridescent scales or fur", "dull, bluish grey scales or fur", "brightly colored scales or fur", "wide gills", "a long fin running down its back", "oversized webbed feet or flippers"],
+                    "has2": ["swims with a slithering motion", "swims with powerful fins or flippers", "propels itself with its strong, finned tail", "a wide-open, fish-like mouth", "rows of wicked looking teeth", "scuttles along the sea floor", "waits to strike from a nook in a reef", "waits to strike from a hole in the sea floor"],
+                    "looking-for": ["some fish to eat", "something warm-blooded to eat", "a new place to hide", "a mate or a nesting site", "shiny baubles and trinkets", "a place where food is plentiful"]
+                },
+                "Storm": {
+                    "look-verb": "is",
+                    "look": ["a basilisk", "a boar", "a drake", "a griffon", "a hawk", "a lizard", "a manticore", "an owlbear", "an ox", "a scorpion", "a serpent", "a wyvern"],
+                    "has1": ["bright blue or white markings", "zigzag stripes", "broad, feathered or leathery wings", "cold, grey eyes", "watery, blue eyes", "a coat that always appears damp", "an aura of static electricity", "a windy aura"],
+                    "has2": ["flies erratically, fluttering in the wind", "flies swiftly, like a bolt of lightning", "causes the ground to quake with each step", "a loud, thunderous howl or cry", "can conjure a raincloud wherever it goes", "exhales lightning when it breathes", "electrically shocks those who touch it", "flies into a rage when struck by an attack"],
+                    "looking-for": ["something to electrocute or to drown", "a lair on high ground with a view of the land", "an individual marked by its master", "an opportunity to impress its master", "the remains of a long-dead storm titan", "an item that can call thunderstorms"]
+                },
+                "Undead": {
+                    "look-verb": "was once",
+                    "look": ["an ape", "a basilisk", "a bat", "a bear", "a boar", "a hippogriff", "a horse", "a hound", "a mare", "a panther", "a rat", "a raven"],
+                    "has1": ["gaping holes where its eyes should be", "lidless, bloodshot eyes", "loose, grey skin hanging off its bony frame", "putrid, decaying flesh falling off its bones", "a musty, moldy odor", "an odor of rotting flesh", "an aura of gloom", "an aura of disease"],
+                    "has2": ["grasping claws or teeth", "a drooling maw", "a long, protruding tongue", "several broken teeth", "a weeping sore in its side", "several oozing boils on its back", "walks with an awkward limp", "shambles and shuffles when it walks"],
+                    "looking-for": ["something to kill", "something to eat", "an individual marked by its master", "an opportunity to impress its master", "the location of an evil shrine", "the location of an evil artifact"]
+                },
+                "Winter": {
+                    "look-verb": "is",
+                    "look": ["a bear", "a boar", "a drake", "an eagle", "an elk", "a fox", "a goat", "an owl", "an owlbear", "an ox", "a stag", "a wolf"],
+                    "has1": ["bright, red eyes", "squinty, dark eyes", "dirty white coloration", "pale grey coloration", "white stripes or markings", "a thick coat of fur or feathers", "an aura of swirling snow", "a frigid aura"],
+                    "has2": ["exhales an icy spray when it breathes", "can exhale a spout of freezing wind", "chills to the bone any who stand close to it", "leaves a trail of frost in its wake", "can freeze things with a touch", "can disappear in a puff of swirling snow", "explodes into many icy shards if it is slain", "walks without hindrance atop snow and ice"],
+                    "looking-for": ["something to preserve to eat later", "a lair with an entrance hidden from view", "an individual marked by its master", "an opportunity to impress its master", "the frozen corpse of a long-dead frost titan", "an item that can call blizzards"]
+                }
+            };
+
+            function getType() {
+                var type = document.getElementById("type").value;
+                return type;
+            }
+
+            function generateNewBeastProperty(propertyName) {
+                var propertyElement = document.getElementById(propertyName);
+                var currentPropertyValue = propertyElement.innerText;
+                var newPropertyValue = pickRandomFromList(
+                        beasts[getType()][propertyName].filter(function(e) {
+                            return e !== currentPropertyValue;
+                        })
+                    );
+                propertyElement.innerText = newPropertyValue;
+            }
+
+            window.newLook = function newLook() {
+                generateNewBeastProperty("look");
+            }
+
+            window.newHas1 = function newHas1() {
+                generateNewBeastProperty("has1");
+            }
+
+            window.newHas2 = function newHas2() {
+                generateNewBeastProperty("has2");
+            }
+
+            window.newLookingFor = function newLookingFor() {
+                generateNewBeastProperty("looking-for");
+            }
+
+            window.newKnownFor = function newKnownFor() {
+                generateNewBeastProperty("known-for");
+            }
+
+            window.generateNewBeast = function generateNewBeast() {
+                document.getElementById("look-verb").innerText = beasts[getType()]["look-verb"];
+
+                newLook();
+                newHas1();
+
+                if (getType() === "Legendary") {
+                    document.getElementById("legendary").style.display = "inline";
+                    document.getElementById("not-legendary").style.display = "none";
+
+                    newKnownFor();
+                } else {
+                    document.getElementById("legendary").style.display = "none";
+                    document.getElementById("not-legendary").style.display = "inline";
+
+                    newHas2();
+                    newLookingFor();
+                }
+            }
+
+            generateNewBeast();
+
+            // Preventing descriptors from being highlighted
+            // on double-click only.
+            for (var descriptor of document.getElementsByClassName("descriptor")) {
+                descriptor.addEventListener("mousedown", function (event) {
+                    if (event.detail > 1) {
+                        event.preventDefault();
+                    }
+                }, false);
+            }
+
+        }());
+    </script>
+</body>
+</html>
