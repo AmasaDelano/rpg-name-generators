@@ -22,4 +22,25 @@
         }
         return result;
     }
+
+    window.setToNewRandomFromList = function setToNewRandomFromList(id, list) {
+        var element = document.getElementById(id);
+        var currentValue = element.innerText;
+        var newValue = pickRandomFromList(
+            list.filter(function(e) {
+                return e !== currentValue;
+            })
+        );
+        element.innerText = newValue;
+
+        var classElements = document.querySelectorAll("." + id);
+        classElements.forEach(function (classElement) {
+            classElement.innerText = newValue;
+        });
+    };
+
+    window.setIdInnerText = function setIdInnerText(id, innerText) {
+        var element = document.getElementById(id);
+        element.innerText = innerText;
+    };
 }());

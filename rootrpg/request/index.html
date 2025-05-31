@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate a Root RPG Clearing</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" type="text/css" href="../../common.css" />
+    <style>
+        
+        .request {
+            font-size: 1.5em;
+            color: white;
+            margin-top: 5px;
+        }
+
+        .descriptor {
+            color: lightblue;
+            cursor: pointer;
+        }
+        
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>RPG Generators</h1>
+
+        <nav>
+            <a class="nav-item" href="../../">NPC Names</a>
+            <a class="nav-item" href="../../instantnpc/">Instant NPC</a>
+            <a class="nav-item" href="../../instantcity/">Instant City</a>
+            <a class="nav-item" href="../../fantasticbeasts/">Fantastic Beasts</a>
+            <a class="nav-item" href="../../adventurebuilder/">Adventure Builder</a>
+            <a class="nav-item" href="./">Root RPG Clearing</a>
+            <a class="nav-item selected" href="../request">Root RPG Request</a>
+        </nav>
+
+        <hr/>
+
+        <h2>Request: <span id="request-title"></span></h2>
+        <!-- , a predominantly<span id="suit" class="descriptor" onclick="newSuit()">[Suit]</span> community -->
+
+        <p class="request">
+            <span id="requester" class="descriptor" onclick="newRequester()">Someone</span> is asking the vagabonds to go to <span id="location" class="descriptor" onclick="newLocation()">somewhere</span> and <span id="task" class="descriptor" onclick="newTask()">do something to</span> <span id="task-target", class="descriptor" onclick="newTaskTarget()">something</span>.
+        </p>
+        <p class="request">
+            However, <span id="complication1" class="descriptor" onclick="newComplication(this)">there's a problem</span> and <span id="complication2" class="descriptor" onclick="newComplication(this)">they'll have to deal with it (click to add a second problem)</span>.
+        </p>
+
+        <input class="generate-button" type="button" onclick="generateNewRequest()" value="REGENERATE" />
+
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="../../underscore-min.js"></script>
+    <script src="../../common.js"></script>
+    <script>
+        (function () {
+            "use strict";
+
+            var d6 = [1, 2, 3, 4, 5, 6];
+
+            window.newRequester = function newRequester() {
+                var requesters = [
+                    {
+                        title: "Trusted Benefactor",
+                        text: "A powerful leader of the faction with whom the PCs collectively have the best reputation"
+                    },
+                    {
+                        title: "Chance for Redemption",
+                        text: "A powerful leader of the faction with whom the PCs collectively have the worst reputation"
+                    },
+                    {
+                        title: "Local Help",
+                        text: "A leader of a neighboring clearing"
+                    },
+                    {
+                        title: "Scratch My Back...",
+                        text: "A would-be usurper of the leadership of a neighboring clearing"
+                    },
+                    {
+                        title: "Aid the Underdogs",
+                        text: "A military representative of the faction with the fewest clearings under control"
+                    },
+                    {
+                        title: "Stay on the Winning Side",
+                        text: "A military representative of the faction with the most clearings under control"
+                    }
+                ];
+
+                var requester = pickRandomFromList(requesters)[0];
+
+                setIdInnerText("request-title", requester.title);
+                setIdInnerText("requester", requester.text);
+            };
+
+            window.newLocation = function newLocation() {
+                var locations = ["a forest between clearings", "a forest between clearings", "a forest between clearings", "the most isolated clearing", "the most connected clearing", "a faction-entrenched clearing"];
+
+                setToNewRandomFromList("location", locations);
+            };
+
+            var currentTaskTargets = [];
+
+            window.newTask = function newTask() {
+                var tasks = ["deliver [an item]", "destroy [an item]", "steal [an item]", "repair/modify [an item]", "neutralize [a threat]", "investigate [a threat]", "eliminate [a threat]", "spy on [a threat]", "negotiate with [a group]", "raid [a group]", "protect [a group]", "disband [a group]"];
+
+                var items = [
+                    "a goods-laden cart",
+                    "ink, pens, and parchment",
+                    "a treasure chest",
+                    "exceptional armor",
+                    "a historical scroll",
+                    "medical supplies",
+                    "mill equipment",
+                    "jewelry",
+                    "cookware",
+                    "official missive",
+                    "treaty",
+                    "valuable tome",
+                    "forge equipment",
+                    "an official insignia or badge",
+                    "quality tools",
+                    "ale, wine, or spirits",
+                    "reliquary (container for religious relics)",
+                    "a clockwork mechanism",
+                    "farm equipment",
+                    "royal regalia",
+                    "an exceptional weapon",
+                    "collected taxes",
+                    "a strange device or relic",
+                    "explosives",
+                    "exceptional food",
+                    "an important key",
+                    "arms for a troop",
+                    "a map",
+                    "a banner",
+                    "valuable raw materials",
+                    "subsistence food",
+                    "luxury goods",
+                    "armor for a troop",
+                    "a road sign",
+                    "a rudimentary printing press",
+                    "a valuable trophy"
+                ];
+
+                var threats = [
+                    "a bear",
+                    "a heretical philosopher",
+                    "criminal outsiders",
+                    "a xenophobic governor",
+                    "a rabblerouser",
+                    "a dangerous spy",
+                    "a bandit captain",
+                    "a disloyal assassin",
+                    "traveling thieves",
+                    "an unscrupulous doctor",
+                    "a satirical bard",
+                    "an insidious conspiracy",
+                    "a rogue commander",
+                    "bounty hunters",
+                    "isolationists",
+                    "a traveling charlatan",
+                    "a clever loan shark",
+                    "a secretive murderer",
+                    "a militant commander",
+                    "callous mercenaries",
+                    "a local garrison",
+                    "an unscrupulous smuggler",
+                    "a strict lawkeeper",
+                    "a determined treasure seeker",
+                    "a reckless rebel",
+                    "a cunning rebel",
+                    "a greedy governor",
+                    "an overzealous guard captain",
+                    "a strange seer",
+                    "a deceptive leader",
+                    "a dangerous vagabond",
+                    "rage-filled arsonists",
+                    "a hateful governor",
+                    "a belligerent brute",
+                    "a defecting soldier",
+                    "a vengeful leader"
+                ];
+
+                var groups = [
+                    "a minority denizen group",
+                    "military engineers",
+                    "a mercenary company",
+                    "a messenger guild",
+                    "a prisoner caravan",
+                    "a smuggling ring",
+                    "an expeditionary force",
+                    "tax collectors",
+                    "traveling missionaries",
+                    "a band of hunters",
+                    "an honor guard",
+                    "a wealthy family",
+                    "a guard troop",
+                    "a frontline troop",
+                    "a carnival troupe",
+                    "a trailblazers' union",
+                    "a carpenters' union",
+                    "a crime family",
+                    "a scouting troop",
+                    "rebel insurgents",
+                    "refugees",
+                    "a bakers' guild",
+                    "a metalworkers' guild",
+                    "a deserter band",
+                    "a propaganda troop",
+                    "a local trade guild",
+                    "a banking collective",
+                    "a mining company",
+                    "a strange cult",
+                    "a vigilante group",
+                    "lawkeepers",
+                    "a ruling council",
+                    "a trade clan",
+                    "a merchant caravan",
+                    "an explorers band",
+                    "a vagabond band"
+                ];
+
+                var task = pickRandomFromList(tasks)[0];
+                if (task.indexOf(" [an item]") > -1) {
+                    currentTaskTargets = items;
+                    task = task.replace(" [an item]", "");
+                } else if (task.indexOf(" [a threat]") > -1) {
+                    currentTaskTargets = threats;
+                    task = task.replace(" [a threat]", "");
+                } else if (task.indexOf(" [a group]") > -1) {
+                    currentTaskTargets = groups;
+                    task = task.replace(" [a group]", "");
+                }
+
+                setIdInnerText("task", task);
+
+                newTaskTarget();
+            };
+
+            window.newTaskTarget = function newTaskTarget() {
+                setToNewRandomFromList("task-target", currentTaskTargets);
+            };
+
+            window.newComplication = function newCompilation(sender) {
+                var tasks = [
+                    "there's a false identity",
+                    "there are surprising stakes",
+                    "there's a warfront",
+                    "there's a friend on wrong side",
+                    "there's a coercive threat",
+                    "there's a deep cultural divide",
+                    "there's a third party involved",
+                    "there's local hostility",
+                    "there are opposing agents",
+                    "there's prejudice",
+                    "an enemy is in power",
+                    "it's a frame job",
+                    "there's a traitor",
+                    "the target is friendly",
+                    "the targets are hidden/secure",
+                    "there's resource scarcity",
+                    "plague or illness abounds",
+                    "there's an existential threat",
+                    "innocents will be in the crossfire",
+                    "secrets and lies abound",
+                    "they have a clingy hanger-on",
+                    "there are watchful eyes",
+                    "there are hidden motives",
+                    "there are taboos and restrictions",
+                    "there's a great military presence",
+                    "there's a natural disaster",
+                    "an old enemy will appear",
+                    "there's another enticing offer",
+                    "there's an usurpation in progress",
+                    "there are toothless laws",
+                    "there's rampant corruption",
+                    "there's a time limit",
+                    "there's an ongoing intraclearing feud",
+                    "there's a strange phenomenon",
+                    "the vagabonds are being hunted",
+                    "the clearing is ruled unofficially"
+                ];
+
+                setToNewRandomFromList(sender.id || sender, tasks);
+            };
+            
+            window.generateNewRequest = function generateNewRequest() {
+                newRequester();
+                newLocation();
+                newTask();
+                newComplication("complication1");
+            };
+
+            generateNewRequest();
+
+            // Preventing descriptors from being highlighted
+            // on double-click only.
+            for (var descriptor of document.getElementsByClassName("descriptor")) {
+                descriptor.addEventListener("mousedown", function (event) {
+                    if (event.detail > 1) {
+                        event.preventDefault();
+                    }
+                }, false);
+            }
+
+        }());
+    </script>
+</body>
+</html>

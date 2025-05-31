@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate a Root RPG Clearing</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" type="text/css" href="../../common.css" />
+    <style>
+        
+        .component {
+            font-size: 1.5em;
+            color: white;
+            margin-top: 5px;
+        }
+
+        .descriptor {
+            color: lightblue;
+            cursor: pointer;
+        }
+        
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>RPG Generators</h1>
+
+        <nav>
+            <a class="nav-item" href="../../">NPC Names</a>
+            <a class="nav-item" href="../../instantnpc/">Instant NPC</a>
+            <a class="nav-item" href="../../instantcity/">Instant City</a>
+            <a class="nav-item" href="../../fantasticbeasts/">Fantastic Beasts</a>
+            <a class="nav-item" href="../../adventurebuilder/">Adventure Builder</a>
+            <a class="nav-item selected" href="./">Root RPG Clearing</a>
+            <a class="nav-item" href="../request">Root RPG Request</a>
+        </nav>
+
+        <hr/>
+
+        <h2>Your Clearing: <span class="descriptor" id="clearing-name" onclick="newClearingName()">[Name]</span></h2>
+        <!-- , a predominantly<span id="suit" class="descriptor" onclick="newSuit()">[Suit]</span> community -->
+
+        <p class="greeting">
+            <em>
+                (
+                <select id="clearing-greeting-modifier" onchange="newClearingGreeting()">
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                    <option value="4">Four</option>
+                    <option value="5">Five</option>
+                </select>
+                factions control <span class="clearing-name"></span> and neighbors.)
+            </em>
+        </p>
+        <p class="greeting">
+            <strong class="clearing-name"></strong><span id="clearing-greeting">...</span>
+        </p>
+
+        <p class="component"><strong>Buildings</strong>: <span id="building1" class="descriptor" onclick="newBuilding(this)"></span> and <span id="building2" class="descriptor" onclick="newBuilding(this)"></span></p>
+
+        <p class="component"><strong>Inhabitants</strong>: <span id="inhabitant1" class="descriptor" onclick="newInhabitant(this)"></span> and <span id="inhabitant2" class="descriptor" onclick="newInhabitant(this)"></span></p>
+
+        <p class="component"><strong>Problems</strong>: <span id="problem1" class="descriptor" onclick="newProblem(this)"></span> and <span id="problem2" class="descriptor" onclick="newProblem(this)"></span></p>
+
+        <input class="generate-button" type="button" onclick="generateNewClearing()" value="REGENERATE" />
+
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="../../underscore-min.js"></script>
+    <script src="../../common.js"></script>
+    <script>
+        (function () {
+            "use strict";
+
+            var d6 = [1, 2, 3, 4, 5, 6];
+
+            window.newClearingName = function newClearingName() {
+                var clearingNames = ["Patchwood", "Underleaf", "Ironvein", "Clutcher's Creek", "Pinehorn", "Sundell", "Rooston", "Milltown", "Oakenhold", "Limberly", "Allaburrow", "Blackpaw's Dam", "Flathome", "Tonnery", "Firehollow", "Opensky Haven", "Icetrap", "Windgap Refuge"];
+
+                setToNewRandomFromList("clearing-name", clearingNames);
+            };
+
+            window.newClearingGreeting = function newClearingGreeting() {
+                var die1 = pickRandomFromList(d6)[0];
+                var die2 = pickRandomFromList(d6)[0];
+                var modifier = parseInt(document.getElementById("clearing-greeting-modifier").value);
+                var totalRoll = die1 + die2 + modifier;
+
+                var greeting = "";
+                if (totalRoll <= 7) {
+                    greeting = " is Untouched. It's by and large unaffected by the war directly. Its buildings haven't been stricken by destruction, and it doesn't have a particularly noteworthy buildup of martial forces or defenses.";
+                } else if (totalRoll <= 10) {
+                    greeting = " is Battle-scarred. It shows the signs of battle, the scars of fighting. The faction in control has it well in hand, but everyone in the clearing has felt the sting of the war.";
+                } else if (totalRoll <= 12) {
+                    greeting = " is Occupied and Battle-scarred. It's seen war, recently, and shows the scars. Furthermore, it is likely occupied, or has recently been occupied, by a second faction.";
+                } else {
+                    greeting = " is Fortified, Battle-scarred, and Occupied. It's seen war, recently, and shows the scars. Furthermore, it is likely occupied, or has recently been occupied, by a second faction.";
+                }
+                var clearingGreetingElement = document.getElementById("clearing-greeting");
+                clearingGreetingElement.innerText = greeting;
+            };
+
+            window.newInhabitant = function newInhabitant(sender) {
+                var inhabitants = ["Mayor", "Smith", "Guard", "Captain", "Rebel", "Leader", "Enemy", "Captain", "Village", "Elder", "Farmer", "Thief", "Local", "Regent", "Scholar", "Tax", "Collector", "Doctor", "Armorer", "Merchant", "Noble", "Astronomer", "Healer", "Banker", "Rabble-Rouser", "Bandit", "Mercenary", "Baker", "Tracker", "Historian", "Faction", "Recruiter", "Tailor/", "Cobbler", "Jeweler", "Sheriff", "Barber", "Monk", "Soldier", "Mason", "Assassin", "Gambler", "Minstrel", "Judge"];
+
+                setToNewRandomFromList(sender.id || sender, inhabitants);
+            };
+            
+            window.newBuilding = function newBuilding(sender) {
+                var buildings = ["Mill", "Forge", "Well", "Farm", "Kiln", "Town Hall", "Guard Tower", "Fence/Wall", "Longhouse", "Archive", "Larder", "Grain Silo", "Armory", "Infirmary", "Brewery", "Bakehouse", "Woodshop", "Warehouse", "Orchard", "Custom House", "Market", "Monastery", "Tavern", "Inn", "Almshouse", "Barracks", "Schoolhouse", "Bridge", "Dam", "Bank", "Fountain", "Prison", "Graveyard", "Courthouse", "Trading Post", "Aqueduct"];
+
+                setToNewRandomFromList(sender.id || sender, buildings);
+            };
+
+            window.newProblem = function newProblem(sender) {
+                var problems = ["Bear", "Natural disaster", "Bandits", "Enemy occupation", "Famine", "Sickness", "Tyranny", "War", "Money", "Inequality", "Overpopulation", "Lack of development", "Corruption", "Dissent/Rebellion", "Lack of crucial resource", "Lack of skilled labor", "Overtaxation", "Sabotage", "Internal strife", "Inflexible traditions", "Prejudice", "Brutality", "Protection racket", "Xenophobia", "Road damage", "Obsolescence", "Cultural assimilation", "Coup", "Poisoned supplies", "Dilapidated architecture", "Fearmongering", "Warmongering", "Smugglers", "Thieves", "Censorship", "Strange mystery"];
+
+                setToNewRandomFromList(sender.id || sender, problems);
+            };
+
+            window.generateNewClearing = function generateNewClearing() {
+                newClearingName();
+                newClearingGreeting();
+                newInhabitant("inhabitant1");
+                newInhabitant("inhabitant2");
+                newBuilding("building1");
+                newBuilding("building2");
+                newProblem("problem1");
+                newProblem("problem2");
+            };
+
+            generateNewClearing();
+
+            // Preventing descriptors from being highlighted
+            // on double-click only.
+            for (var descriptor of document.getElementsByClassName("descriptor")) {
+                descriptor.addEventListener("mousedown", function (event) {
+                    if (event.detail > 1) {
+                        event.preventDefault();
+                    }
+                }, false);
+            }
+
+        }());
+    </script>
+</body>
+</html>
