@@ -24,14 +24,16 @@
     }
 
     window.setToNewRandomFromList = function setToNewRandomFromList(id, list) {
-        var element = document.getElementById(id);
-        var currentValue = element.innerText;
+        var currentValues = document.querySelectorAll("#" + id + ", ." + id.slice(0, -1) + "s").forEach(function (setElement) {
+            return setElement.innerText;
+        }) || [];
         var newValue = pickRandomFromList(
             list.filter(function(e) {
-                return e !== currentValue;
+                return currentValues.indexOf(e) === -1;
             })
         );
-        element.innerText = newValue;
+
+        setIdInnerText(id, newValue);
 
         var classElements = document.querySelectorAll("." + id);
         classElements.forEach(function (classElement) {
@@ -42,5 +44,14 @@
     window.setIdInnerText = function setIdInnerText(id, innerText) {
         var element = document.getElementById(id);
         element.innerText = innerText;
+    };
+
+    window.getNumericSelectValue = function getNumericSelectValue(id) {
+        return parseInt(document.getElementById(id).value);
+    };
+
+    
+    window.isCheckboxChecked = function isCheckboxChecked(id) {
+        return document.getElementById(id).checked;
     };
 }());

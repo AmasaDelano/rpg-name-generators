@@ -37,6 +37,7 @@
             <a class="nav-item" href="../../adventurebuilder/">Adventure Builder</a>
             <a class="nav-item selected" href="./">Root RPG Clearing</a>
             <a class="nav-item" href="../request">Root RPG Request</a>
+            <a class="nav-item" href="../npcs">Root RPG NPCs</a>
         </nav>
 
         <hr/>
@@ -89,7 +90,7 @@
             window.newClearingGreeting = function newClearingGreeting() {
                 var die1 = pickRandomFromList(d6)[0];
                 var die2 = pickRandomFromList(d6)[0];
-                var modifier = parseInt(document.getElementById("clearing-greeting-modifier").value);
+                var modifier = getNumericSelectValue("clearing-greeting-modifier");
                 var totalRoll = die1 + die2 + modifier;
 
                 var greeting = "";

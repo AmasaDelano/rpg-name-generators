@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Root RPG NPCs</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" type="text/css" href="../../common.css" />
+    <style>
+        
+        .npc {
+            font-size: 1.5em;
+            color: white;
+            margin-top: 5px;
+        }
+
+        .descriptor {
+            color: lightblue;
+            cursor: pointer;
+        }
+        
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>RPG Generators</h1>
+
+        <nav>
+            <a class="nav-item" href="../../">NPC Names</a>
+            <a class="nav-item" href="../../instantnpc/">Instant NPC</a>
+            <a class="nav-item" href="../../instantcity/">Instant City</a>
+            <a class="nav-item" href="../../fantasticbeasts/">Fantastic Beasts</a>
+            <a class="nav-item" href="../../adventurebuilder/">Adventure Builder</a>
+            <a class="nav-item" href="../clearing">Root RPG Clearing</a>
+            <a class="nav-item" href="../request">Root RPG Request</a>
+            <a class="nav-item selected" href="./">Root RPG NPCs</a>
+        </nav>
+
+        <hr/>
+
+        <h2>NPCs</h2>
+        <ol>
+            <li class="npc"><span id="name1" class="descriptor names" onclick="newName(this)">Someone</span> is <span id="species1" class="descriptor" onclick="newSpecies()">an animal</span> who wants <span id="drive1" class="descriptor drives" onclick="newDrive(this)">to do something</span>.</li>
+            <li class="npc"><span id="name2" class="descriptor names" onclick="newName(this)">Someone</span> is <span id="species2" class="descriptor" onclick="newSpecies()">an animal</span> who wants <span id="drive2" class="descriptor drives" onclick="newDrive(this)">to do something</span>.</li>
+            <li class="npc"><span id="name3" class="descriptor names" onclick="newName(this)">Someone</span> is <span id="species3" class="descriptor" onclick="newSpecies()">an animal</span> who wants <span id="drive3" class="descriptor drives" onclick="newDrive(this)">to do something</span>.</li>
+            <li class="npc"><span id="name4" class="descriptor names" onclick="newName(this)">Someone</span> is <span id="species4" class="descriptor" onclick="newSpecies()">an animal</span> who wants <span id="drive4" class="descriptor drives" onclick="newDrive(this)">to do something</span>.</li>
+            <li class="npc"><span id="name5" class="descriptor names" onclick="newName(this)">Someone</span> is <span id="species5" class="descriptor" onclick="newSpecies()">an animal</span> who wants <span id="drive5" class="descriptor drives" onclick="newDrive(this)">to do something</span>.</li>
+            <li class="npc"><span id="name6" class="descriptor names" onclick="newName(this)">Someone</span> is <span id="species6" class="descriptor" onclick="newSpecies()">an animal</span> who wants <span id="drive6" class="descriptor drives" onclick="newDrive(this)">to do something</span>.</li>
+            <li class="npc"><span id="name7" class="descriptor names" onclick="newName(this)">Someone</span> is <span id="species7" class="descriptor" onclick="newSpecies()">an animal</span> who wants <span id="drive7" class="descriptor drives" onclick="newDrive(this)">to do something</span>.</li>
+            <li class="npc"><span id="name8" class="descriptor names" onclick="newName(this)">Someone</span> is <span id="species8" class="descriptor" onclick="newSpecies()">an animal</span> who wants <span id="drive8" class="descriptor drives" onclick="newDrive(this)">to do something</span>.</li>
+            <li class="npc"><span id="name9" class="descriptor names" onclick="newName(this)">Someone</span> is <span id="species9" class="descriptor" onclick="newSpecies()">an animal</span> who wants <span id="drive9" class="descriptor drives" onclick="newDrive(this)">to do something</span>.</li>
+        </ol>
+
+        <input class="generate-button" type="button" onclick="generateNewNpcs()" value="REGENERATE NPCS" />
+
+        <hr/>
+
+        <h2>Stat Block</h2>
+        <p>
+            There's
+            <select id="mob" onchange="updateStatBlock()">
+                <option value="1">just 1</option>
+                <option value="7">5-10</option>
+                <option value="15">11-20</option>
+                <option value="30">21+</option>
+            </select>
+            of them, trying to
+            <select id="base-harm" onchange="updateStatBlock()">
+                <option value="injury">kill or wound</option>
+                <option value="exhaustion">stop or capture</option>
+            </select>
+            you using
+            <select id="range" onchange="updateStatBlock()">
+                <option value="intimate">knives, fists, or similar</option>
+                <option value="close">swords, spears, or similar</option>
+                <option value="far">bows and arrows or similar</option>
+            </select>.
+            Their weapons are
+            <label><input type="checkbox" onchange="updateStatBlock()" id="lethal"> lethal,</label>
+            <label><input type="checkbox" onchange="updateStatBlock()" id="tricky"> tricky or tiring,</label> and/or
+            <label><input type="checkbox" onchange="updateStatBlock()" id="bashing"> bashing or breaking.</label>
+        </p>
+        
+        <p>They absorb damage like
+            <select id="injury" onclick="updateStatBlock()">
+                <option value="1">an average denizen</option>
+                <option value="2">a trained fighter</option>
+                <option value="3">a brute</option>
+                <option value="4">a dangerous veteran soldier</option>
+                <option value="5">a terrifying foe or a bear</option>
+            </select>, have endurance like
+            <select id="exhaustion" onclick="updateStatBlock()">
+                <option value="1">an average denizen</option>
+                <option value="2">a farmhand or laborer</option>
+                <option value="3">an acrobat or average NPC vagabond</option>
+                <option value="4">a local strongpaw</option>
+                <option value="5">an incredibly capable vagabond</option>
+            </select>, have equipment like
+            <select id="wear" onclick="updateStatBlock()">
+                <option value="1">an average denizen</option>
+                <option value="2">a decently equipped soldier</option>
+                <option value="3">a well-equipped soldier</option>
+                <option value="4">an armed and armored knight</option>
+                <option value="5">a wealthy and superbly equipped knight</option>
+            </select>, and have resolve like
+            <select id="morale" onclick="updateStatBlock()">
+                <option value="1">an average denizen</option>
+                <option value="2">a canny merchant</option>
+                <option value="3">a leader or sergeant</option>
+                <option value="4">a committed believer</option>
+                <option value="5">a fanatical idealogue</option>
+            </select>.
+        </p>
+
+        <h3>Finished Stat Block:</h3>
+        <ul class="npc">
+            <li>Damage: <span id="damage-stat">1 injury</span></li>
+            <li>Injury: <span id="injury-stat">1</span></li>
+            <li>Exhaustion: <span id="exhaustion-stat">1</span></li>
+            <li>Wear: <span id="wear-stat">1</span></li>
+            <li>Morale: <span id="morale-stat">1</span></li>
+        </ul>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="../../underscore-min.js"></script>
+    <script src="../../common.js"></script>
+    <script>
+        (function () {
+            "use strict";
+
+            window.newName = function newName(sender) {
+                var names = ["Aimee", "Alvin", "Anders", "Alyse", "Bhea", "Billi", "Braden", "Buford", "Cesspyr", "Cloak", "Cinder", "Constance", "Dawna", "Dewly", "Doneel", "Dugan", "Ellaine", "Emmie", "Ewan", "Ward", "Flannera", "Fog", "Foster", "Frink", "Gemma", "Golden", "Greta", "Gustav", "Harper", "Henny", "Hinnic", "Howerd", "Igrin", "Ilso", "Inda", "Irwen", "Jacly", "Jasper", "Jinx", "Johann", "Keilee", "Kagan", "Keera", "Konnor", "Laina", "Lindyn", "Lockler", "Longtooth", "Masgood", "Mint", "Monca", "Murty", "Nail", "Nan", "Nigel", "Nomi", "Olaga", "Omin", "Orry", "Oxley", "Pattee", "Phona", "Pintin", "Prewitt", "Quay", "Quentin", "Quill", "Quinella", "Reece", "Rhodia", "Roric", "Rose", "Sarra", "Selwin", "Sorin", "Stasee", "Tammora", "Thickfur", "Timber", "Tondric", "Ulveny", "Ulvid", "Ummery", "Urma", "Vance", "Vennic", "Vittora", "Vost", "Wanda", "Wettlecress", "Whickam", "Woodleaf", "Xander", "Xara", "Xeelie", "Xim", "Yasmin", "Yates", "Yolenda", "Yotterie", "Zachrie", "Zain", "Zoic", "Zola"];
+
+                setToNewRandomFromList(sender.id || sender, names);
+            };
+            
+            window.newSpecies = function newSpecies(sender) {
+                var species = ["badger", "beaver", "bluejay", "cat", "fox", "hawk", "lizard", "mouse", "opossum", "otter", "owl", "raccoon", "rabbit", "squirrel", "wolf"];
+
+                setToNewRandomFromList(sender.id || sender, species);
+            };
+            
+            window.newDrive = function newDrive(sender) {
+                var drives = ["to get revenge", "to get rich", "to make family safe", "to make home safe", "to gain power", "to explore", "to build something magnificent", "to resist invaders", "to defend the weak", "to destroy an enemy", "to wage war", "to prove worth", "to undermine a figure of power", "to find comfort", "to serve a higher cause", "to escape", "to negotiate peaceful resolutions", "to survive at all costs", "to earn social status and position", "to take control", "to exert power and authority on others", "to lay waste"];
+
+                setToNewRandomFromList(sender.id || sender, drives);
+            };
+
+            window.generateNewNpcs = function generateNewNpcs() {
+                newName("name1");
+                newName("name2");
+                newName("name3");
+                newName("name4");
+                newName("name5");
+                newName("name6");
+                newName("name7");
+                newName("name8");
+                newName("name9");
+
+                newSpecies("species1");
+                newSpecies("species2");
+                newSpecies("species3");
+                newSpecies("species4");
+                newSpecies("species5");
+                newSpecies("species6");
+                newSpecies("species7");
+                newSpecies("species8");
+                newSpecies("species9");
+
+                newDrive("drive1");
+                newDrive("drive2");
+                newDrive("drive3");
+                newDrive("drive4");
+                newDrive("drive5");
+                newDrive("drive6");
+                newDrive("drive7");
+                newDrive("drive8");
+                newDrive("drive9");
+            };
+
+            generateNewNpcs();
+
+            window.updateStatBlock = function updateStatBlock() {
+                var damageInjury = 0;
+                var damageExhaustion = 0;
+                var damageWear = 0;
+                var injury = getNumericSelectValue("injury");
+                var exhaustion = getNumericSelectValue("exhaustion");
+                var wear = getNumericSelectValue("wear");
+                var morale = getNumericSelectValue("morale");
+
+                if (document.getElementById("base-harm").value === "exhaustion") {
+                    damageExhaustion += 1;
+                } else {
+                    damageInjury += 1;
+                }
+
+                if (isCheckboxChecked("lethal")) {
+                    damageInjury += 1;
+                }
+                if (isCheckboxChecked("tricky")) {
+                    damageExhaustion += 1;
+                }
+                if (isCheckboxChecked("bashing")) {
+                    damageWear += 1;
+                }
+                
+                var mobSize = getNumericSelectValue("mob");
+                if (mobSize >= 21) {
+                    injury += 6;
+                    exhaustion += 6;
+                    wear += 6;
+                    morale += 6;
+                    damageInjury *= 4;
+                    damageExhaustion *= 4;
+                    damageWear *= 4;
+                } else if (mobSize >= 11) {
+                    injury += 4;
+                    exhaustion += 4;
+                    wear += 4;
+                    morale += 4;
+                    damageInjury *= 3;
+                    damageExhaustion *= 3;
+                    damageWear *= 3;
+                } else if (mobSize >= 5) {
+                    injury += 2;
+                    exhaustion += 2;
+                    wear += 2;
+                    morale += 2;
+                    damageInjury *= 2;
+                    damageExhaustion *= 2;
+                    damageWear *= 2;
+                }
+
+                var damageTexts = [];
+                if (damageInjury > 0) {
+                    damageTexts.push(damageInjury + " injury");
+                }
+                if (damageExhaustion > 0) {
+                    damageTexts.push(damageExhaustion + " exhaustion");
+                }
+                if (damageWear > 0) {
+                    damageTexts.push(damageWear + " wear");
+                }
+                setIdInnerText("damage-stat", damageTexts.join(" + "));
+                setIdInnerText("injury-stat", injury);
+                setIdInnerText("exhaustion-stat", exhaustion);
+                setIdInnerText("wear-stat", wear);
+                setIdInnerText("morale-stat", morale);
+            };
+
+            // Preventing descriptors from being highlighted
+            // on double-click only.
+            for (var descriptor of document.getElementsByClassName("descriptor")) {
+                descriptor.addEventListener("mousedown", function (event) {
+                    if (event.detail > 1) {
+                        event.preventDefault();
+                    }
+                }, false);
+            }
+
+        }());
+    </script>
+</body>
+</html>
