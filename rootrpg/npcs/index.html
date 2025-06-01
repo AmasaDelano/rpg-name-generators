@@ -19,6 +19,10 @@
             color: lightblue;
             cursor: pointer;
         }
+
+        .choices {
+            font-size: 1.2em;
+        }
         
     </style>
 </head>
@@ -55,12 +59,12 @@
             <li class="npc"><span id="name9" class="descriptor names" onclick="newName(this)">Someone</span> is <span id="species9" class="descriptor" onclick="newSpecies()">an animal</span> who wants <span id="drive9" class="descriptor drives" onclick="newDrive(this)">to do something</span>.</li>
         </ol>
 
-        <input class="generate-button" type="button" onclick="generateNewNpcs()" value="REGENERATE NPCS" />
+        <input class="generate-button" type="button" onclick="generateNewNpcs()" value="REGENERATE ALL NPCS" />
 
         <hr/>
 
         <h2>Stat Block</h2>
-        <p>
+        <p class="choices">
             There's
             <select id="mob" onchange="updateStatBlock()">
                 <option value="1">just 1</option>
@@ -69,23 +73,30 @@
                 <option value="30">21+</option>
             </select>
             of them, trying to
-            <select id="base-harm" onchange="updateStatBlock()">
-                <option value="injury">kill or wound</option>
-                <option value="exhaustion">stop or capture</option>
+            <select id="base-harm-type" onchange="updateStatBlock()">
+                <option value="injury">kill or wound you</option>
+                <option value="exhaustion">stop or capture you</option>
+                <option value="wear">damage your stuff</option>
             </select>
-            you using
+            using
             <select id="range" onchange="updateStatBlock()">
                 <option value="intimate">knives, fists, or similar</option>
                 <option value="close">swords, spears, or similar</option>
                 <option value="far">bows and arrows or similar</option>
+            </select>, most like a 
+            <select id="base-harm" onchange="updateStatBlock()">
+                <option value="1;0;0">standard blade</option>
+                <option value="0;1;0">bare fists or a staff</option>
+                <option value="2;0;0">large, sharp weapon, wielded with strength</option>
+                <option value="1;1;0">tricky weapon, like a whip</option>
+                <option value="1;0;1">heavy, 2-handed weapon</option>
             </select>.
-            Their weapons are
-            <label><input type="checkbox" onchange="updateStatBlock()" id="lethal"> lethal,</label>
-            <label><input type="checkbox" onchange="updateStatBlock()" id="tricky"> tricky or tiring,</label> and/or
-            <label><input type="checkbox" onchange="updateStatBlock()" id="bashing"> bashing or breaking.</label>
+            They are
+            <label><input type="checkbox" onchange="updateStatBlock()" id="lethal"> powerful and mighty</label> and/or
+            <label><input type="checkbox" onchange="updateStatBlock()" id="tricky"> skilled and cunning</label>.
         </p>
         
-        <p>They absorb damage like
+        <p class="choices">They absorb damage like
             <select id="injury" onclick="updateStatBlock()">
                 <option value="1">an average denizen</option>
                 <option value="2">a trained fighter</option>
@@ -116,7 +127,11 @@
             </select>.
         </p>
 
-        <h3>Finished Stat Block:</h3>
+        <input type="button" onclick="updateStatBlock()" value="GENERATE STAT BLOCK" />
+
+        <hr/>
+
+        <h3 class="npc"><strong>Finished Stat Block:</strong></h3>
         <ul class="npc">
             <li>Damage: <span id="damage-stat">1 injury</span></li>
             <li>Injury: <span id="injury-stat">1</span></li>
@@ -140,7 +155,7 @@
             };
             
             window.newSpecies = function newSpecies(sender) {
-                var species = ["badger", "beaver", "bluejay", "cat", "fox", "hawk", "lizard", "mouse", "opossum", "otter", "owl", "raccoon", "rabbit", "squirrel", "wolf"];
+                var species = ["badger", "bat", "beaver", "bluejay", "cardinal", "cat", "crow", "fox", "hawk", "lizard", "mole", "mouse", "opossum", "otter", "owl", "raccoon", "rabbit", "sparrow", "squirrel", "vulture", "wolf"];
 
                 setToNewRandomFromList(sender.id || sender, species);
             };
@@ -186,29 +201,38 @@
             generateNewNpcs();
 
             window.updateStatBlock = function updateStatBlock() {
-                var damageInjury = 0;
-                var damageExhaustion = 0;
-                var damageWear = 0;
                 var injury = getNumericSelectValue("injury");
                 var exhaustion = getNumericSelectValue("exhaustion");
                 var wear = getNumericSelectValue("wear");
                 var morale = getNumericSelectValue("morale");
 
-                if (document.getElementById("base-harm").value === "exhaustion") {
-                    damageExhaustion += 1;
-                } else {
-                    damageInjury += 1;
+                var baseHarm = document.getElementById("base-harm").value.split(";").map(h => parseInt(h, 10));
+
+                var harmInjury = baseHarm[0];
+                var harmExhaustion = baseHarm[1];
+                var harmWear = baseHarm[2];
+
+                var baseHarmType = document.getElementById("base-harm-type").value;
+                if (baseHarmType === "injury") {
+                    harmInjury += harmExhaustion + harmWear;
+                    harmExhaustion = harmWear = 0;
+                } else if (baseHarmType === "exhaustion") {
+                    harmExhaustion += harmInjury + harmWear;
+                    harmInjury = harmWear = 0;
+                } else if (baseHarmType === "wear") {
+                    harmWear += harmInjury + harmExhaustion + 1;
+                    harmInjury = harmExhaustion = 0;
                 }
 
                 if (isCheckboxChecked("lethal")) {
-                    damageInjury += 1;
+                    harmInjury += 1;
                 }
                 if (isCheckboxChecked("tricky")) {
-                    damageExhaustion += 1;
+                    harmExhaustion += 1;
                 }
-                if (isCheckboxChecked("bashing")) {
-                    damageWear += 1;
-                }
+                // if (isCheckboxChecked("bashing")) {
+                //     harmWear += 1;
+                // }
                 
                 var mobSize = getNumericSelectValue("mob");
                 if (mobSize >= 21) {
@@ -216,38 +240,38 @@
                     exhaustion += 6;
                     wear += 6;
                     morale += 6;
-                    damageInjury *= 4;
-                    damageExhaustion *= 4;
-                    damageWear *= 4;
+                    harmInjury *= 4;
+                    harmExhaustion *= 4;
+                    harmWear *= 4;
                 } else if (mobSize >= 11) {
                     injury += 4;
                     exhaustion += 4;
                     wear += 4;
                     morale += 4;
-                    damageInjury *= 3;
-                    damageExhaustion *= 3;
-                    damageWear *= 3;
+                    harmInjury *= 3;
+                    harmExhaustion *= 3;
+                    harmWear *= 3;
                 } else if (mobSize >= 5) {
                     injury += 2;
                     exhaustion += 2;
                     wear += 2;
                     morale += 2;
-                    damageInjury *= 2;
-                    damageExhaustion *= 2;
-                    damageWear *= 2;
+                    harmInjury *= 2;
+                    harmExhaustion *= 2;
+                    harmWear *= 2;
                 }
 
-                var damageTexts = [];
-                if (damageInjury > 0) {
-                    damageTexts.push(damageInjury + " injury");
+                var harmTexts = [];
+                if (harmInjury > 0) {
+                    harmTexts.push(harmInjury + " injury");
                 }
-                if (damageExhaustion > 0) {
-                    damageTexts.push(damageExhaustion + " exhaustion");
+                if (harmExhaustion > 0) {
+                    harmTexts.push(harmExhaustion + " exhaustion");
                 }
-                if (damageWear > 0) {
-                    damageTexts.push(damageWear + " wear");
+                if (harmWear > 0) {
+                    harmTexts.push(harmWear + " wear");
                 }
-                setIdInnerText("damage-stat", damageTexts.join(" + "));
+                setIdInnerText("damage-stat", harmTexts.join(" + ") || "1 exhaustion");
                 setIdInnerText("injury-stat", injury);
                 setIdInnerText("exhaustion-stat", exhaustion);
                 setIdInnerText("wear-stat", wear);
